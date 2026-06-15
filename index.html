@@ -2,695 +2,1327 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shama Thakur — shamathakur.dev</title>
-<meta name="description" content="AI systems engineer, loop architect, data analyst, builder of 100+ things. Stockholm. Nashik. Everywhere in between.">
-<meta property="og:title" content="Shama Thakur — shamathakur.dev">
-<meta property="og:description" content="I don't prompt AI. I build the systems that do.">
-<meta property="og:url" content="https://shamathakur.dev">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Expat Compass · Stockholm · 2025</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --ink:#0d0c0a;--ink2:#13120f;--ink3:#1a1814;
-  --paper:#f5f0e8;--paper2:#ede7d9;--paper3:#e2dace;
-  --gold:#c9a84c;--gold2:#9b7e38;--gold3:rgba(201,168,76,0.15);
-  --rust:#b85c38;--teal:#3a7d74;--teal2:rgba(58,125,116,0.15);
-  --b1:rgba(201,168,76,0.12);--b2:rgba(245,240,232,0.07);--b3:rgba(245,240,232,0.04);
-  --m1:rgba(245,240,232,0.7);--m2:rgba(245,240,232,0.45);--m3:rgba(245,240,232,0.25);
+  --void:#020304;
+  --deep:#080c10;
+  --surface:#0d1318;
+  --lift:#131c24;
+  --edge:#1e2d3d;
+  --gold:#c9a84c;
+  --gold2:#f0c96e;
+  --teal:#3dd9c4;
+  --teal2:#1a9985;
+  --rose:#e8526a;
+  --ice:#a8d4e6;
+  --text:#e8e4dc;
+  --muted:#6b8096;
+  --dim:#3a4f62;
+  --r:0.7s cubic-bezier(.23,1,.32,1);
 }
 html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--paper);font-family:'DM Mono',monospace;font-size:13px;font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{
+  background:var(--void);
+  color:var(--text);
+  font-family:'Space Grotesk',sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:none;
+}
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,opacity .15s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,168,76,0.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .08s,width .2s,height .2s,border-color .2s}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:20px;height:20px}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:50px;height:50px;border-color:rgba(201,168,76,0.8)}
 
-/* GRAIN */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
-
-/* CURSOR TRAIL */
-#trail-canvas{position:fixed;inset:0;pointer-events:none;z-index:8999}
+/* STARFIELD */
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;border-bottom:1px solid var(--b2);background:rgba(13,12,10,0.9);backdrop-filter:blur(16px)}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;letter-spacing:.16em;color:var(--gold);text-decoration:none}
-.nav-r{display:flex;align-items:center;gap:32px}
-.nav-links{display:flex;gap:24px;list-style:none}
-.nav-links a{color:var(--m3);text-decoration:none;font-size:10px;letter-spacing:.14em;text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:var(--paper)}
-.nav-status{font-size:10px;color:var(--teal);letter-spacing:.1em;display:flex;align-items:center;gap:6px}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:16px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(2,3,4,0.95) 0%,transparent 100%);
+  backdrop-filter:blur(10px);
+}
+.logo{
+  font-family:'Space Mono',monospace;
+  font-size:13px;letter-spacing:.12em;
+  color:var(--gold);
+  text-transform:uppercase;
+}
+.nav-links{display:flex;gap:6px}
+.nl{
+  background:none;border:none;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);
+  padding:8px 14px;border-radius:20px;
+  cursor:none;transition:all .2s;
+}
+.nl:hover,.nl.on{color:var(--gold);background:rgba(201,168,76,.08)}
+.nl.on{border:1px solid rgba(201,168,76,.2)}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;overflow:hidden;border-bottom:1px solid var(--b2)}
-.hero-bg{position:absolute;inset:0;pointer-events:none}
-.hero-ring{position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:700px;height:700px;border:1px solid rgba(201,168,76,0.05);border-radius:50%}
-.hero-ring2{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:500px;height:500px;border:1px solid rgba(201,168,76,0.04);border-radius:50%}
-.hero-ring3{position:absolute;right:0;top:50%;transform:translateY(-50%);width:300px;height:300px;border:1px solid rgba(201,168,76,0.06);border-radius:50%}
+/* PAGES */
+.pg{display:none;min-height:100vh;padding-top:80px;position:relative;z-index:1}
+.pg.show{display:block}
 
-.hero-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+/* ============ HERO PAGE ============ */
+#pg-hero{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  min-height:100vh;text-align:center;
+  padding:80px 40px 60px;
+}
+.hero-orb{
+  width:320px;height:320px;border-radius:50%;
+  position:relative;margin:0 auto 48px;
+  animation:orbFloat 6s ease-in-out infinite;
+}
+@keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.orb-inner{
+  width:100%;height:100%;border-radius:50%;
+  background:radial-gradient(ellipse at 35% 35%,rgba(61,217,196,.25),rgba(201,168,76,.1) 40%,transparent 70%);
+  border:1px solid rgba(61,217,196,.2);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.orb-inner::before{
+  content:'';position:absolute;inset:-50%;
+  background:conic-gradient(from 0deg,transparent 0deg,rgba(61,217,196,.06) 60deg,transparent 120deg);
+  animation:orbSpin 12s linear infinite;
+}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+.orb-ring{
+  position:absolute;inset:-20px;border-radius:50%;
+  border:1px solid rgba(201,168,76,.12);
+  animation:orbSpin 20s linear infinite reverse;
+}
+.orb-ring2{
+  position:absolute;inset:-40px;border-radius:50%;
+  border:1px dashed rgba(61,217,196,.06);
+  animation:orbSpin 30s linear infinite;
+}
+.orb-text{
+  font-family:'Space Mono',monospace;
+  font-size:11px;letter-spacing:.15em;
+  color:var(--teal);text-transform:uppercase;
+  position:relative;z-index:1;
+}
+.hero-eyebrow{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:20px;
+}
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(42px,7vw,80px);
+  font-weight:300;
+  line-height:1.05;
+  margin-bottom:24px;
+}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-size:16px;color:var(--muted);
+  max-width:480px;margin:0 auto 48px;
+  line-height:1.8;
+}
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-gold{
+  background:var(--gold);color:var(--void);
+  border:none;border-radius:40px;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;font-size:13px;letter-spacing:.05em;
+  padding:14px 28px;cursor:none;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.btn-gold::after{
+  content:'';position:absolute;inset:0;border-radius:40px;
+  background:rgba(255,255,255,0);
+  transition:background .2s;
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,168,76,.3)}
+.btn-ghost{
+  background:none;
+  border:1px solid rgba(201,168,76,.3);
+  border-radius:40px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:13px;letter-spacing:.05em;color:var(--gold);
+  padding:14px 28px;cursor:none;
+  transition:all .25s;
+}
+.btn-ghost:hover{background:rgba(201,168,76,.07);border-color:var(--gold);transform:translateY(-2px)}
 
-.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(64px,10vw,128px);font-weight:300;line-height:.88;letter-spacing:-.02em;color:var(--paper);margin-bottom:0}
-.hero-name-2{font-family:'Cormorant Garamond',serif;font-size:clamp(64px,10vw,128px);font-weight:300;line-height:.88;font-style:italic;letter-spacing:-.02em;color:var(--gold);margin-bottom:36px}
+.hero-stats{
+  display:flex;gap:40px;justify-content:center;flex-wrap:wrap;
+  margin-top:60px;padding-top:40px;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.hstat{text-align:center}
+.hstat-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:44px;font-weight:300;
+  color:var(--gold);line-height:1;
+}
+.hstat-l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
 
-.hero-rotating{font-size:13px;color:var(--m2);margin-bottom:40px;min-height:20px;letter-spacing:.04em}
-.hero-rotating span{border-right:1px solid var(--gold);padding-right:4px}
+/* ============ DECISION TREE PAGE ============ */
+#tree-canvas{width:100%;min-height:600px;position:relative;overflow:hidden}
+.tree-node{
+  position:absolute;
+  background:var(--surface);
+  border:1px solid var(--edge);
+  border-radius:12px;
+  padding:14px 18px;
+  cursor:none;
+  transition:all .3s cubic-bezier(.23,1,.32,1);
+  min-width:160px;
+  text-align:center;
+  user-select:none;
+}
+.tree-node:hover{
+  border-color:var(--gold);
+  background:var(--lift);
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 40px rgba(201,168,76,.15);
+  z-index:10;
+}
+.tree-node.root{
+  background:linear-gradient(135deg,var(--lift),var(--surface));
+  border-color:var(--teal);
+  box-shadow:0 0 30px rgba(61,217,196,.12);
+}
+.tree-node.root:hover{border-color:var(--teal2)}
+.tree-node.active{
+  border-color:var(--gold);
+  background:rgba(201,168,76,.08);
+  box-shadow:0 0 30px rgba(201,168,76,.2);
+}
+.tree-node.leaf{border-style:dashed}
+.tn-label{font-size:12px;font-weight:600;letter-spacing:.03em;margin-bottom:4px}
+.tn-sub{font-size:11px;color:var(--muted)}
+.tn-icon{font-size:20px;margin-bottom:8px;line-height:1}
+.tree-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
 
-.hero-desc{font-size:14px;color:var(--m1);max-width:480px;line-height:1.85;margin-bottom:48px;border-left:2px solid var(--gold3);padding-left:20px}
-.hero-desc strong{color:var(--paper);font-weight:400}
+/* ============ MINDMAP PAGE ============ */
+#mindmap-canvas{width:100%;min-height:700px;position:relative;background:var(--void);border-radius:16px;overflow:hidden}
+.mm-node{
+  position:absolute;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  cursor:none;
+  transition:all .4s cubic-bezier(.23,1,.32,1);
+  user-select:none;
+  font-family:'Space Mono',monospace;
+}
+.mm-node:hover{z-index:20}
+.mm-node-inner{padding:12px}
+.mm-label{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.3}
+.mm-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:4px}
+.mm-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.mm-tooltip{
+  position:absolute;z-index:50;
+  background:var(--lift);
+  border:1px solid var(--edge);
+  border-radius:10px;
+  padding:14px 18px;
+  min-width:200px;
+  pointer-events:none;
+  opacity:0;transition:opacity .2s;
+  font-size:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+.mm-tooltip.show{opacity:1}
+.mm-tooltip h4{font-size:13px;font-weight:600;margin-bottom:6px;color:var(--gold)}
+.mm-tooltip p{color:var(--muted);line-height:1.6}
+.mm-tooltip a{color:var(--teal);text-decoration:none;font-size:11px}
 
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:72px}
-.btn{font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:12px 28px;transition:all .2s;display:inline-block;font-family:'DM Mono',monospace}
-.btn-primary{background:var(--gold);color:var(--ink);font-weight:500}
-.btn-primary:hover{background:var(--paper)}
-.btn-ghost{border:1px solid var(--b1);color:var(--m2)}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+/* ============ 3D LAYER (CSS 3D) ============ */
+#scene-3d{
+  width:100%;height:700px;
+  perspective:1200px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.cube-world{
+  width:500px;height:500px;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:worldSpin 25s linear infinite;
+}
+@keyframes worldSpin{to{transform:rotateY(360deg) rotateX(10deg)}}
+.cube-world:hover{animation-play-state:paused}
+.area-sphere{
+  position:absolute;
+  width:80px;height:80px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  cursor:none;
+  transition:all .3s;
+  text-align:center;
+  box-shadow:0 0 30px rgba(0,0,0,.5);
+  font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+}
+.area-sphere:hover{
+  transform:scale(1.3) !important;
+  z-index:100;
+  box-shadow:0 0 60px rgba(201,168,76,.4);
+}
+.sphere-label{font-size:9px;line-height:1.3;color:rgba(255,255,255,.9)}
+.sphere-score{
+  font-family:'Space Mono',monospace;
+  font-size:14px;font-weight:700;
+  color:white;margin-bottom:2px;
+}
+.scene-instruction{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  font-size:11px;color:var(--muted);letter-spacing:.08em;
+  text-transform:uppercase;
+}
 
-.hero-stats{display:grid;grid-template-columns:repeat(4,auto);gap:0;border:1px solid var(--b2);width:fit-content}
-.hs{padding:20px 32px;border-right:1px solid var(--b2);text-align:center}
-.hs:last-child{border-right:none}
-.hs-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:4px}
-.hs-l{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--m3);line-height:1.4}
+/* ============ JOURNEY PAGE (5D) ============ */
+.journey-track{
+  position:relative;
+  padding:60px 40px;
+  max-width:900px;margin:0 auto;
+}
+.journey-line{
+  position:absolute;left:50%;top:0;bottom:0;
+  width:1px;background:linear-gradient(180deg,transparent,var(--teal),var(--gold),var(--rose),transparent);
+  transform:translateX(-50%);
+}
+.journey-node{
+  display:flex;gap:40px;align-items:flex-start;
+  margin-bottom:60px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s,transform .6s;
+}
+.journey-node.left{flex-direction:row-reverse;text-align:right}
+.journey-node.visible{opacity:1;transform:translateY(0)}
+.j-dot{
+  width:16px;height:16px;border-radius:50%;
+  flex-shrink:0;margin-top:6px;
+  position:relative;z-index:2;
+  box-shadow:0 0 20px currentColor;
+}
+.j-dot::after{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid currentColor;opacity:.3;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.5);opacity:0}}
+.j-card{
+  flex:1;background:var(--surface);
+  border:1px solid var(--edge);border-radius:14px;
+  padding:20px 24px;
+  transition:all .3s;max-width:360px;
+}
+.journey-node:not(.left) .j-card{margin-left:60px}
+.journey-node.left .j-card{margin-right:60px}
+.j-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.j-phase{font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.j-title{font-size:17px;font-weight:600;margin-bottom:8px}
+.j-body{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.j-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--teal);text-decoration:none;
+  letter-spacing:.04em;border-bottom:1px solid rgba(61,217,196,.2);
+  padding-bottom:2px;transition:border-color .2s;
+}
+.j-link:hover{border-color:var(--teal)}
+.j-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.j-tag{
+  font-size:10px;padding:3px 10px;border-radius:20px;
+  letter-spacing:.04em;
+}
 
-/* VISITOR MODES */
-.modes-section{padding:80px 48px;border-bottom:1px solid var(--b2)}
-.modes-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;display:flex;align-items:center;gap:10px}
-.modes-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
-.modes-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--b2);border:1px solid var(--b2)}
-.mode-card{background:var(--ink2);padding:28px 20px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
-.mode-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left}
-.mode-card:hover::before,.mode-card.active::before{transform:scaleX(1)}
-.mode-card:hover,.mode-card.active{background:rgba(201,168,76,0.05)}
-.mode-icon{font-size:20px;margin-bottom:12px}
-.mode-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.mode-desc{font-size:11px;color:var(--m3);line-height:1.6}
+/* ============ INSIGHTS GRID ============ */
+.insights-bento{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:14px;
+  padding:40px;
+  max-width:1100px;margin:0 auto;
+}
+.bcard{
+  background:var(--surface);
+  border:1px solid var(--edge);
+  border-radius:16px;
+  padding:24px;
+  cursor:none;
+  transition:all .3s cubic-bezier(.23,1,.32,1);
+  position:relative;overflow:hidden;
+}
+.bcard::before{
+  content:'';position:absolute;inset:0;border-radius:16px;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(201,168,76,.04),transparent 60%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.bcard:hover::before{opacity:1}
+.bcard:hover{border-color:rgba(201,168,76,.3);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.bc-1{grid-column:span 4}
+.bc-2{grid-column:span 8}
+.bc-3{grid-column:span 6}
+.bc-4{grid-column:span 3}
+.bc-5{grid-column:span 9}
+.bc-6{grid-column:span 12}
+@media(max-width:768px){.bc-1,.bc-2,.bc-3,.bc-4,.bc-5,.bc-6{grid-column:span 12}}
+.bc-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.bc-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:56px;font-weight:300;line-height:1;
+  margin-bottom:8px;
+}
+.bc-title{font-size:18px;font-weight:600;margin-bottom:8px}
+.bc-body{font-size:13px;color:var(--muted);line-height:1.7}
+.bc-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--teal);text-decoration:none;
+  margin-top:14px;letter-spacing:.04em;
+}
+.bc-link::after{content:'→';transition:transform .2s}
+.bc-link:hover::after{transform:translateX(4px)}
+.mini-bar{
+  height:4px;border-radius:2px;
+  background:var(--edge);margin:6px 0;
+  overflow:hidden;
+}
+.mini-bar-fill{
+  height:100%;border-radius:2px;
+  transition:width 1s cubic-bezier(.23,1,.32,1);
+  width:0;
+}
+.bar-group{margin:16px 0}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-name{font-size:12px;color:var(--text);min-width:100px}
+.bar-wrap{flex:1;background:var(--edge);height:6px;border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.23,1,.32,1);width:0}
+.bar-val{font-size:11px;color:var(--muted);min-width:36px;text-align:right;font-family:'Space Mono',monospace}
+.badge{
+  display:inline-block;
+  font-size:10px;padding:4px 10px;border-radius:20px;
+  letter-spacing:.05em;margin:3px;
+}
+.badge-teal{background:rgba(61,217,196,.1);color:var(--teal)}
+.badge-gold{background:rgba(201,168,76,.1);color:var(--gold)}
+.badge-rose{background:rgba(232,82,106,.1);color:var(--rose)}
 
-/* CONTENT PANELS */
-.panel{display:none;padding:64px 48px;border-bottom:1px solid var(--b2);animation:fadeUp .4s ease}
-.panel.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+/* AREA RADAR (SVG chart) */
+#radar-wrap{display:flex;justify-content:center;margin:20px 0}
 
-/* SECTION SHARED */
-section{padding:88px 48px;border-bottom:1px solid var(--b2)}
-.ey{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.ey::before{content:'';width:18px;height:1px;background:var(--gold)}
-h2.sh{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,52px);font-weight:300;line-height:1.05;color:var(--paper);margin-bottom:10px}
-h2.sh em{font-style:italic;color:var(--gold)}
-.sub{color:var(--m2);font-size:13px;line-height:1.8;max-width:520px;margin-bottom:52px}
+/* SCROLL reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.reveal.vis{opacity:1;transform:translateY(0)}
 
-/* BENTO GRID */
-.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:80px;gap:4px}
-.b{background:var(--ink2);border:1px solid var(--b2);padding:24px;transition:all .25s;position:relative;overflow:hidden;cursor:default}
-.b:hover{border-color:var(--b1);background:var(--ink3)}
-.b.c2{grid-column:span 2}.b.c3{grid-column:span 3}.b.c4{grid-column:span 4}.b.c5{grid-column:span 5}.b.c6{grid-column:span 6}.b.c7{grid-column:span 7}.b.c8{grid-column:span 8}.b.c12{grid-column:span 12}
-.b.r2{grid-row:span 2}.b.r3{grid-row:span 3}.b.r4{grid-row:span 4}.b.r5{grid-row:span 5}
-.b-cat{font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
-.bc-e{color:var(--rust)}.bc-ai{color:#8a7fc7}.bc-ci{color:var(--teal)}.bc-cr{color:var(--gold2)}.bc-br{color:var(--gold)}
-.b-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--paper);line-height:1.2;margin-bottom:6px}
-.b-title.lg{font-size:24px}
-.b-desc{font-size:11px;color:var(--m3);line-height:1.65}
-.b-n{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--gold);line-height:1}
-.b-nl{font-size:10px;color:var(--m3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
-.b-link{position:absolute;bottom:20px;left:24px;font-size:10px;color:var(--teal);text-decoration:none;letter-spacing:.08em;border-bottom:1px solid rgba(58,125,116,.25);padding-bottom:1px;transition:all .2s}
-.b-link:hover{color:var(--gold);border-color:rgba(201,168,76,.4)}
-.b-pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
-.b-pill{font-size:9px;padding:2px 8px;border:1px solid var(--b1);color:var(--m3)}
-.b-bg{position:absolute;bottom:-10px;right:-10px;font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:rgba(201,168,76,0.04);line-height:1;pointer-events:none}
+/* SECTION HEADERS */
+.section-hd{
+  text-align:center;
+  padding:80px 40px 40px;
+}
+.section-hd .eyebrow{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:16px;
+}
+.section-hd h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,5vw,56px);
+  font-weight:300;line-height:1.1;
+  margin-bottom:12px;
+}
+.section-hd h2 em{font-style:italic;color:var(--gold)}
+.section-hd p{font-size:15px;color:var(--muted);max-width:500px;margin:0 auto}
 
-/* TIMELINE */
-.tl{display:grid;grid-template-columns:100px 1fr;gap:0}
-.tl-item{display:contents}
-.tl-yr{font-size:11px;color:var(--gold);letter-spacing:.1em;padding:24px 0;border-right:1px solid var(--b2);padding-right:28px;position:relative}
-.tl-yr::after{content:'';position:absolute;right:-4px;top:30px;width:7px;height:7px;border-radius:50%;background:var(--gold);border:2px solid var(--ink)}
-.tl-content{padding:20px 0 20px 32px;border-bottom:1px solid var(--b2)}
-.tl-item:last-child .tl-content{border-bottom:none}
-.tl-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--paper);margin-bottom:4px}
-.tl-desc{font-size:12px;color:var(--m3);line-height:1.7;margin-bottom:6px}
-.tl-me{font-size:11px;color:var(--teal);letter-spacing:.03em}
-
-/* SERVICES */
-.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--b2);border:1px solid var(--b2)}
-.svc{background:var(--ink2);padding:36px 32px}
-.svc-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:16px}
-.svc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--paper);margin-bottom:8px}
-.svc-price{font-size:11px;color:var(--gold);letter-spacing:.08em;margin-bottom:10px}
-.svc-desc{font-size:12px;color:var(--m3);line-height:1.7}
-.svc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
-.svc-tag{font-size:9px;padding:3px 8px;border:1px solid var(--b1);color:var(--m3)}
-
-/* QR / BRAND */
-.brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.brand-card{background:var(--ink2);border:1px solid var(--b2);padding:28px;transition:border-color .2s}
-.brand-card:hover{border-color:var(--b1)}
-.brand-icon{width:48px;height:48px;border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
-.brand-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--paper);margin-bottom:6px}
-.brand-desc{font-size:11px;color:var(--m3);line-height:1.65}
-
-/* STACK CHIPS */
-.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:16px}
-.chip{font-size:10px;padding:4px 12px;border:1px solid var(--b2);color:var(--m3);letter-spacing:.05em;transition:all .2s}
-.chip:hover,.chip.hi{border-color:var(--gold);color:var(--gold)}
-.chip-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--m3);margin-top:20px;margin-bottom:6px;width:100%}
-
-/* KOFI */
-.kofi-strip{background:rgba(201,168,76,0.04);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:18px 48px;display:flex;align-items:center;justify-content:space-between}
-.kofi-strip p{font-size:12px;color:var(--m3)}
-.kofi-btn{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:8px 20px;transition:all .2s}
-.kofi-btn:hover{background:var(--gold);color:var(--ink)}
-
-/* CTA FINAL */
-.cta-final{padding:96px 48px;text-align:center;position:relative}
-.cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,80px);font-weight:300;font-style:italic;color:var(--paper);line-height:1;margin-bottom:20px}
-.cta-sub{font-size:13px;color:var(--m3);max-width:380px;margin:0 auto 40px;line-height:1.8}
-.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+/* RIPPLE */
+.ripple{
+  position:fixed;border-radius:50%;
+  pointer-events:none;z-index:9990;
+  transform:translate(-50%,-50%) scale(0);
+  animation:rippleOut .6s ease-out forwards;
+}
+@keyframes rippleOut{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:.4}
+  100%{transform:translate(-50%,-50%) scale(4);opacity:0}
+}
 
 /* FOOTER */
-footer{padding:32px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--b2);font-size:10px;color:var(--m3)}
-.ft-links{display:flex;gap:20px}
-footer a{color:var(--m3);text-decoration:none;letter-spacing:.06em;transition:color .2s}
-footer a:hover{color:var(--gold)}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  nav{padding:14px 20px}
-  .nav-links{display:none}
-  .hero,.modes-section,section,.panel{padding-left:20px;padding-right:20px}
-  .hero-name,.hero-name-2{font-size:clamp(52px,14vw,80px)}
-  .hero-stats{grid-template-columns:repeat(2,1fr);width:100%}
-  .hs{border-bottom:1px solid var(--b2)}
-  .modes-grid{grid-template-columns:1fr 1fr}
-  .bento{grid-template-columns:1fr 1fr;grid-auto-rows:auto}
-  .b.c2,.b.c3,.b.c4,.b.c5,.b.c6,.b.c7,.b.c8,.b.c12{grid-column:span 1}
-  .b.r2,.b.r3,.b.r4,.b.r5{grid-row:span 1}
-  .svc-grid,.brand-grid{grid-template-columns:1fr}
-  .kofi-strip{flex-direction:column;gap:14px;text-align:center}
-  footer{flex-direction:column;gap:12px;text-align:center}
+footer{
+  border-top:1px solid var(--edge);
+  padding:40px;
+  display:flex;flex-wrap:wrap;gap:20px;
+  justify-content:space-between;align-items:center;
+  position:relative;z-index:1;margin-top:40px;
 }
+.ft-logo{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--gold)}
+.ft-links{display:flex;gap:16px;flex-wrap:wrap}
+.ft-links a{
+  font-size:12px;color:var(--muted);text-decoration:none;
+  letter-spacing:.06em;text-transform:uppercase;
+  transition:color .2s;
+}
+.ft-links a:hover{color:var(--gold)}
+.kofi{
+  background:var(--gold);color:var(--void);
+  font-family:'Space Grotesk',sans-serif;
+  font-size:12px;font-weight:600;letter-spacing:.04em;
+  padding:10px 20px;border-radius:30px;
+  text-decoration:none;transition:all .2s;
+}
+.kofi:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* AUDIO indicator */
+#audio-toggle{
+  position:fixed;bottom:30px;right:30px;z-index:600;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--edge);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;font-size:18px;
+  transition:all .2s;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+#audio-toggle:hover{border-color:var(--gold);background:var(--lift)}
+
+/* PROGRESS dots */
+.pg-dots{
+  position:fixed;right:20px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:10px;z-index:500;
+}
+.pg-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--dim);cursor:none;
+  transition:all .25s;
+}
+.pg-dot.on{background:var(--gold);box-shadow:0 0 8px var(--gold);transform:scale(1.4)}
+
+/* SCROLL indicator */
+.scroll-hint{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+  animation:fadeUpDown 2s ease-in-out infinite;
+}
+@keyframes fadeUpDown{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}50%{opacity:1;transform:translateX(-50%) translateY(-4px)}}
+.scroll-arrow{width:1px;height:30px;background:linear-gradient(180deg,var(--teal),transparent)}
 </style>
 </head>
 <body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="stars"></canvas>
 
-<canvas id="trail-canvas"></canvas>
-
+<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">shamathakur.dev</a>
-  <div class="nav-r">
-    <ul class="nav-links">
-      <li><a href="#work">Work</a></li>
-      <li><a href="#method">Method</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="nav-status"><div class="nav-dot"></div>Open to roles · Stockholm</div>
+  <div class="logo">Expat Compass · Stockholm</div>
+  <div class="nav-links">
+    <button class="nl on" onclick="showPage('hero',this)">Home</button>
+    <button class="nl" onclick="showPage('tree',this)">Decision Tree</button>
+    <button class="nl" onclick="showPage('mindmap',this)">Mind Map</button>
+    <button class="nl" onclick="showPage('viz3d',this)">3D Areas</button>
+    <button class="nl" onclick="showPage('journey',this)">Your Journey</button>
+    <button class="nl" onclick="showPage('insights',this)">Insights</button>
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<div class="hero">
-  <div class="hero-bg">
-    <div class="hero-ring"></div>
-    <div class="hero-ring2"></div>
-    <div class="hero-ring3"></div>
+<!-- Page progress dots -->
+<div class="pg-dots">
+  <div class="pg-dot on" onclick="showPage('hero',document.querySelectorAll('.nl')[0])"></div>
+  <div class="pg-dot" onclick="showPage('tree',document.querySelectorAll('.nl')[1])"></div>
+  <div class="pg-dot" onclick="showPage('mindmap',document.querySelectorAll('.nl')[2])"></div>
+  <div class="pg-dot" onclick="showPage('viz3d',document.querySelectorAll('.nl')[3])"></div>
+  <div class="pg-dot" onclick="showPage('journey',document.querySelectorAll('.nl')[4])"></div>
+  <div class="pg-dot" onclick="showPage('insights',document.querySelectorAll('.nl')[5])"></div>
+</div>
+
+<!-- AUDIO TOGGLE -->
+<div id="audio-toggle" onclick="toggleAudio()" title="Sound">🔇</div>
+
+<!-- ========== HERO PAGE ========== -->
+<div id="pg-hero" class="pg show">
+  <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px 60px">
+    <div class="hero-orb">
+      <div class="orb-inner">
+        <div class="orb-ring"></div>
+        <div class="orb-ring2"></div>
+        <div class="orb-text">STOCKHOLM<br>2025</div>
+      </div>
+    </div>
+    <p class="hero-eyebrow">For expat families navigating Stockholm</p>
+    <h1 class="hero-h1">Your family's<br><em>perfect place</em><br>to land.</h1>
+    <p class="hero-sub">A 5-dimensional compass for expat families moving to Stockholm. Commutes, schools, community, culture — mapped, compared, decided.</p>
+    <div class="hero-ctas">
+      <button class="btn-gold" onclick="showPage('tree',document.querySelectorAll('.nl')[1])">Start the decision tree →</button>
+      <button class="btn-ghost" onclick="showPage('insights',document.querySelectorAll('.nl')[5])">See the data</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n" data-count="12">0</div><div class="hstat-l">Areas mapped</div></div>
+      <div class="hstat"><div class="hstat-n" data-count="30">0</div><div class="hstat-l">Schools researched</div></div>
+      <div class="hstat"><div class="hstat-n" data-count="8">0</div><div class="hstat-l">Municipalities</div></div>
+      <div class="hstat"><div class="hstat-n" data-count="5">0</div><div class="hstat-l">Dimensions analysed</div></div>
+    </div>
   </div>
-  <p class="hero-eyebrow">Stockholm · AI Systems Engineer · Loop Architect · Builder</p>
-  <h1 class="hero-name">Shama</h1>
-  <h1 class="hero-name-2">Thakur</h1>
-  <p class="hero-rotating"><span id="rotating-text">AI Systems Engineer</span></p>
-  <p class="hero-desc">
-    I don't prompt AI.<br>
-    <strong>I build the systems that do.</strong><br><br>
-    14 years in enterprise data. 100+ shipped projects. 13 production AI agents. GDPR compliance at 83-market scale. Nashik roots. Stockholm life. Building in public since before it had a name.
-  </p>
-  <div class="hero-ctas">
-    <a href="#work" class="btn btn-primary">See 100+ projects</a>
-    <a href="#services" class="btn btn-ghost">Work with me</a>
-    <a href="https://linkedin.com/in/shama-t-b7250632" target="_blank" class="btn btn-ghost">LinkedIn</a>
+  <div class="scroll-hint"><div class="scroll-arrow"></div>explore</div>
+</div>
+
+<!-- ========== DECISION TREE PAGE ========== -->
+<div id="pg-tree" class="pg">
+  <div class="section-hd">
+    <p class="eyebrow">Interactive decision tree</p>
+    <h2>Find your <em>path</em></h2>
+    <p>Click any node to explore. The tree adapts to your choices.</p>
   </div>
-  <div class="hero-stats">
-    <div class="hs"><div class="hs-n">100+</div><div class="hs-l">Repos<br>shipped</div></div>
-    <div class="hs"><div class="hs-n">13</div><div class="hs-l">Prod AI<br>agents</div></div>
-    <div class="hs"><div class="hs-n">83</div><div class="hs-l">GDPR<br>markets</div></div>
-    <div class="hs"><div class="hs-n">14+</div><div class="hs-l">Yrs in<br>data</div></div>
+  <div style="padding:20px 40px;position:relative">
+    <div id="tree-canvas" style="min-height:680px">
+      <svg class="tree-svg" id="tree-svg"></svg>
+    </div>
+  </div>
+  <div id="tree-info" style="display:none;max-width:500px;margin:20px auto 40px;background:var(--surface);border:1px solid var(--edge);border-radius:14px;padding:24px">
+    <p class="bc-label" id="ti-label"></p>
+    <h3 style="font-size:20px;margin-bottom:10px" id="ti-title"></h3>
+    <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px" id="ti-body"></p>
+    <a id="ti-link" href="#" target="_blank" class="j-link">Visit resource →</a>
   </div>
 </div>
 
-<!-- ═══ VISITOR MODES ═══ -->
-<div class="modes-section" id="modes">
-  <p class="modes-eyebrow">Who are you?</p>
-  <div class="modes-grid">
-    <div class="mode-card active" onclick="showPanel('recruiter')">
-      <div class="mode-icon">🎯</div>
-      <div class="mode-label">Recruiter / Hiring</div>
-      <div class="mode-desc">Looking at AI engineering, FDE, or data roles</div>
-    </div>
-    <div class="mode-card" onclick="showPanel('investor')">
-      <div class="mode-icon">💡</div>
-      <div class="mode-label">Investor / Client</div>
-      <div class="mode-desc">Exploring consulting, products, or a build</div>
-    </div>
-    <div class="mode-card" onclick="showPanel('collaborator')">
-      <div class="mode-icon">🤝</div>
-      <div class="mode-label">Builder / Collab</div>
-      <div class="mode-desc">Want to build something together</div>
-    </div>
-    <div class="mode-card" onclick="showPanel('community')">
-      <div class="mode-icon">✨</div>
-      <div class="mode-label">Community / Fan</div>
-      <div class="mode-desc">Found me online, want to follow the work</div>
-    </div>
-    <div class="mode-card" onclick="showPanel('human')">
-      <div class="mode-icon">🌿</div>
-      <div class="mode-label">Human / Personal</div>
-      <div class="mode-desc">Family, friends, or just curious about me</div>
-    </div>
+<!-- ========== MINDMAP PAGE ========== -->
+<div id="pg-mindmap" class="pg">
+  <div class="section-hd">
+    <p class="eyebrow">Relational mind map</p>
+    <h2>Everything <em>connected</em></h2>
+    <p>Hover nodes to explore relationships. Click to open resources.</p>
   </div>
-
-  <!-- PANELS -->
-  <div id="panel-recruiter" class="panel active" style="padding:40px 0 0">
-    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR RECRUITERS & HIRING MANAGERS</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I'm a rare profile: enterprise data engineering depth + production AI agent deployment + EU AI Act compliance expertise. Stockholm-based, 14 years of real-scale experience.</p>
-    <p style="font-size:12px;color:var(--m3);margin-bottom:20px">Targeting: Applied AI Engineer, Forward Deployed Engineer, AI Systems Architect, Loop Engineer. Hybrid or remote. Open to Anthropic, Salesforce, Klarna, Spotify, Nordea.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a href="https://linkedin.com/in/shama-t-b7250632" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">LinkedIn Profile</a>
-      <a href="mailto:shama@shamathakur.dev" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">Email directly</a>
+  <div style="padding:20px 40px 60px">
+    <div id="mindmap-canvas" style="min-height:700px">
+      <svg class="mm-svg" id="mm-svg"></svg>
     </div>
-  </div>
-  <div id="panel-investor" class="panel" style="padding:40px 0 0">
-    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR INVESTORS & CLIENTS</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I build working AI systems, not decks. 100+ shipped products, 5 live Gumroad products, enterprise-grade delivery. Available for consulting, custom builds, and strategic AI advisory.</p>
-    <p style="font-size:12px;color:var(--m3);margin-bottom:20px">Areas: AI agent design, GDPR compliance architecture, data pipeline engineering, loop system design, EU AI Act readiness.</p>
-    <a href="#services" class="btn btn-primary" style="font-size:9px;padding:10px 20px">See services & rates</a>
-  </div>
-  <div id="panel-collaborator" class="panel" style="padding:40px 0 0">
-    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR BUILDERS & COLLABORATORS</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I work best with people who ship. If you have an idea that needs AI, data, or a full-stack build — let's talk. I bring engineering, compliance, and creative direction in one person.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a href="https://sovereignbysource.substack.com" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">Follow the build</a>
-      <a href="mailto:shama@shamathakur.dev" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">Pitch an idea</a>
-    </div>
-  </div>
-  <div id="panel-community" class="panel" style="padding:40px 0 0">
-    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR THE COMMUNITY</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">Building in public since before that was a thing. South Asian expat in Stockholm, making AI tools that shouldn't exist yet. Follow the chaos on Substack.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a href="https://sovereignbysource.substack.com" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">Substack</a>
-      <a href="https://instagram.com/shama_thakur77" target="_blank" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">Instagram</a>
-      <a href="https://github.com/shamathakur77" target="_blank" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">GitHub</a>
-    </div>
-  </div>
-  <div id="panel-human" class="panel" style="padding:40px 0 0">
-    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">THE HUMAN BEHIND IT</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I'm Shama. Originally from Nashik, India. Living in Sollentuna, Stockholm with my partner Aniket and our son. I build things with AI during nap times and late nights. I also believe in manifesting, sacred geometry, and that data and consciousness are the same thing at different scales.</p>
-    <a href="https://annam-brahma.vercel.app" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">Read Annam Brahma — my web comic</a>
+    <div class="mm-tooltip" id="mm-tooltip"></div>
   </div>
 </div>
 
-<!-- ═══ WORK BENTO ═══ -->
-<section id="work">
-  <p class="ey">100+ shipped projects</p>
-  <h2 class="sh">Things I've <em>built.</em></h2>
-  <p class="sub">Live URLs. Real users. Real production systems. Not demos.</p>
-
-  <div class="bento">
-
-    <!-- Row 1 -->
-    <div class="b c5 r3">
-      <div class="b-cat bc-e">Enterprise AI · H&M Group · Production</div>
-      <div class="b-title lg">13 Copilot Studio Agents</div>
-      <div class="b-desc" style="margin-top:10px">Athena, Faye + 11 more. Organic cross-org adoption. Zero mandate. AIG.1/AIG.3 EU AI Act classification. The compliance architecture I designed from scratch is now the H&M standard.</div>
-      <div class="b-pills" style="margin-top:12px">
-        <span class="b-pill">Copilot Studio</span>
-        <span class="b-pill">EU AI Act</span>
-        <span class="b-pill">Enterprise</span>
-      </div>
-      <div class="b-bg">13</div>
-    </div>
-
-    <div class="b c4 r2">
-      <div class="b-cat bc-e">H&M · Data · Live</div>
-      <div class="b-title">Cookie Consent at Scale</div>
-      <div class="b-desc" style="margin-top:8px">GDPR monitoring across 300+ websites, 83 markets. BigQuery + Tealium/TCC + Power BI. Built the entire pipeline and dashboard stack.</div>
-    </div>
-
-    <div class="b c3 r1">
-      <div class="b-n">83</div>
-      <div class="b-nl">Markets monitored</div>
-    </div>
-
-    <div class="b c3 r1">
-      <div class="b-n">300+</div>
-      <div class="b-nl">Sites, live GDPR</div>
-    </div>
-
-    <!-- Row 2 cont -->
-    <div class="b c4 r2">
-      <div class="b-cat bc-ai">AI · RAG · Python · Built</div>
-      <div class="b-title">RAG Pipeline + Local Embeddings</div>
-      <div class="b-desc" style="margin-top:8px">Full retrieval-augmented generation system. Local embedding model + Anthropic API. Context as architecture. Built and documented from scratch.</div>
-      <div class="b-pills" style="margin-top:10px">
-        <span class="b-pill">Python</span><span class="b-pill">Anthropic API</span><span class="b-pill">Vectors</span>
-      </div>
-    </div>
-
-    <!-- Row 3 -->
-    <div class="b c3 r2">
-      <div class="b-cat bc-ai">AI App · Live</div>
-      <div class="b-title">Frequency Studio</div>
-      <div class="b-desc" style="margin-top:8px">AI creative tool. Sovereign by Source flagship app.</div>
-      <a href="https://frequencystudio.vercel.app" target="_blank" class="b-link">frequencystudio.vercel.app →</a>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-ai">Physics + AI · Built</div>
-      <div class="b-title">Cymatic Oracle</div>
-      <div class="b-desc" style="margin-top:8px">8,000-particle Chladni physics + Web Audio API + Claude oracle. Real standing-wave equation.</div>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-ai">Three.js · WebGL · Live</div>
-      <div class="b-title">YANTRA</div>
-      <div class="b-desc" style="margin-top:8px">Sacred geometry Three.js universe. Real-time interactive WebGL.</div>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-ai">Reading Series · Live</div>
-      <div class="b-title">Gnosis</div>
-      <div class="b-desc" style="margin-top:8px">5-part Nag Hammadi essay series with Sophia AI companion.</div>
-      <a href="https://gnosis-rouge.vercel.app" target="_blank" class="b-link">gnosis-rouge.vercel.app →</a>
-    </div>
-
-    <!-- Civic row -->
-    <div class="b c3 r2">
-      <div class="b-cat bc-ci">Civic Tech · Own Domain</div>
-      <div class="b-title">Klartväg</div>
-      <div class="b-desc" style="margin-top:8px">Free multilingual Swedish immigration guide. Official sources only. klartvag.se</div>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-ci">Housing Tool · Live</div>
-      <div class="b-title">Bostad Decoder</div>
-      <div class="b-desc" style="margin-top:8px">Stockholm housing listings decoded. Hemnet in plain language.</div>
-      <a href="https://bostad-decoder.vercel.app" target="_blank" class="b-link">bostad-decoder.vercel.app →</a>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-ci">Expat Tool · Live</div>
-      <div class="b-title">Little Learner</div>
-      <div class="b-desc" style="margin-top:8px">Swedish+Hindi+Marathi+English för­skola app. For Desi parents in Sweden.</div>
-      <a href="https://littlelearner.vercel.app" target="_blank" class="b-link">littlelearner.vercel.app →</a>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-ci">Expat Guide · Live</div>
-      <div class="b-title">MOR & MAA</div>
-      <div class="b-desc" style="margin-top:8px">Pregnancy + postpartum guide for expat mothers in Sweden. South Asian + Swedish systems.</div>
-    </div>
-
-    <!-- Creative -->
-    <div class="b c6 r3">
-      <div class="b-cat bc-cr">Web Comic · 12 Episodes · 72 Slides · Live</div>
-      <div class="b-title lg">Annam Brahma</div>
-      <div class="b-desc" style="margin-top:10px">Maharashtrian food, consciousness, lineage. Watercolour textures, brass thali, marigold and rangoli motifs. Instagram-ready 1080×1080 PNG download per slide. Rooted in Nashik, made in Stockholm.</div>
-      <a href="https://annam-brahma.vercel.app" target="_blank" class="b-link">annam-brahma.vercel.app →</a>
-      <div class="b-bg">12</div>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-cr">Aesthetic · 5 Worlds · Live</div>
-      <div class="b-title">Aesthetic Worlds</div>
-      <div class="b-desc" style="margin-top:8px">Vaporwave · Whimsy · Dark Academia · Barbie · Corporate Girly. Five full HTML universes.</div>
-    </div>
-
-    <div class="b c3 r1">
-      <div class="b-cat bc-cr">In memoriam</div>
-      <div class="b-title" style="font-size:16px">Papa Memorial</div>
-      <div class="b-desc" style="font-size:11px;margin-top:4px">The most personal thing I've built.</div>
-    </div>
-
-    <!-- Brand -->
-    <div class="b c6 r2">
-      <div class="b-cat bc-br">Personal Brand · Full Ecosystem · Live</div>
-      <div class="b-title lg">Sovereign by Source</div>
-      <div class="b-desc" style="margin-top:8px">Landing page, link-in-bio, Substack, Stripe, Gumroad (5 products), ElevenLabs podcasts, Ko-fi. Built in public. Everything still running.</div>
-      <div class="b-pills" style="margin-top:10px">
-        <span class="b-pill">Substack</span><span class="b-pill">Stripe</span><span class="b-pill">Gumroad</span><span class="b-pill">ElevenLabs</span>
-      </div>
-    </div>
-
-    <div class="b c3 r2">
-      <div class="b-cat bc-br">Product · Gumroad · €19</div>
-      <div class="b-title">Stillstack</div>
-      <div class="b-desc" style="margin-top:8px">PowerShell automation tool for Windows. Shipped, listed, sold. The whole loop.</div>
-    </div>
-
-    <div class="b c3 r1">
-      <div class="b-n" style="font-size:40px">5+</div>
-      <div class="b-nl">Gumroad products live</div>
-    </div>
-
-    <!-- Overflow -->
-    <div class="b c12 r1" style="display:flex;align-items:center;gap:0;padding:16px 24px">
-      <p style="font-size:10px;color:var(--m3);letter-spacing:.06em">+ Desi Stockholm · Sovereign Aisle · AKASHA · Tonic · Pattern · ICONIQUE · Element Compass Bazi · Sensorium · Wayfarer · Family Jury · Safar Saathi · Nyay · Sweden In Data · Flat Earth Clock · Lilla Timmen · Bla Timmen · Hemval · The Verdict · Bostad Cockpit · Girl Dinner Oracle · Leftover Algorithm · MOR & MAA · gut-brain checklist · 70+ more on GitHub</p>
-    </div>
-
+<!-- ========== 3D AREAS PAGE ========== -->
+<div id="pg-viz3d" class="pg">
+  <div class="section-hd">
+    <p class="eyebrow">3D area comparison</p>
+    <h2>Stockholm in <em>three dimensions</em></h2>
+    <p>Sphere size = expat score. Colour = commute ease. Hover to pause. Click for detail.</p>
   </div>
-</section>
-
-<!-- ═══ METHOD ═══ -->
-<section id="method">
-  <p class="ey">How I work</p>
-  <h2 class="sh">The <em>loop</em> arc.</h2>
-  <div class="tl">
-    <div class="tl-item">
-      <div class="tl-yr">2022</div>
-      <div class="tl-content">
-        <div class="tl-title">Prompt Engineering</div>
-        <div class="tl-desc">Write a good prompt. Get output. Iterate by hand.</div>
-        <div class="tl-me">Me: Writing Copilot Studio agents from scratch.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-yr">2023</div>
-      <div class="tl-content">
-        <div class="tl-title">Agent Orchestration</div>
-        <div class="tl-desc">String agents together. Build pipelines. Deploy across an org without anyone asking you to.</div>
-        <div class="tl-me">Me: 13 agents in production. Organic cross-org adoption. AIG compliance architecture.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-yr">2024</div>
-      <div class="tl-content">
-        <div class="tl-title">Context Engineering</div>
-        <div class="tl-desc">Design the entire information environment the model sees. System prompt as architecture. Memory, tools, retrieval — all design decisions.</div>
-        <div class="tl-me">Me: RAG pipeline in Python. AKASHA. Gnosis. CLAUDE.md rulebook on Windows. Sovereign Content Engine.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-yr">2026</div>
-      <div class="tl-content">
-        <div class="tl-title">Loop Engineering</div>
-        <div class="tl-desc">"My job is to write loops." — Boris Cherny, Head of Claude Code at Anthropic, June 2026. Stop being inside the loop. Design the system that runs it. The model becomes a subroutine.</div>
-        <div class="tl-me">Me: Claude Code on Windows. Vercel CLI loops. 100+ repos. GDPR monitoring that runs at 83 markets without me in the chair.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-yr">Now</div>
-      <div class="tl-content">
-        <div class="tl-title">EU AI Act Deployer</div>
-        <div class="tl-desc">The legal-technical layer most AI engineers skip entirely. Risk classification, compliance architecture, responsible deployment at enterprise scale.</div>
-        <div class="tl-me">Me: The only person I know doing EU AI Act compliance AND shipping the actual agents AND building the monitoring dashboards.</div>
-      </div>
-    </div>
+  <div id="scene-3d">
+    <div class="cube-world" id="cube-world"></div>
+    <p class="scene-instruction">drag to pause · hover sphere for details · click to open area</p>
   </div>
-</section>
-
-<!-- ═══ SERVICES ═══ -->
-<section id="services">
-  <p class="ey">Work with me</p>
-  <h2 class="sh">How I can <em>help.</em></h2>
-  <p class="sub">Consultant. Speaker. Freelancer. Employee. Brand. I'm all of it. Here's how to engage.</p>
-  <div class="svc-grid">
-    <div class="svc">
-      <div class="svc-num">01</div>
-      <div class="svc-title">AI Systems Audit</div>
-      <div class="svc-price">From €1,500 / engagement</div>
-      <div class="svc-desc">I review your existing AI setup — agents, prompts, pipelines, compliance posture — and tell you what's a liability, what's underbuilt, and what needs a loop instead of a prompt.</div>
-      <div class="svc-tags"><span class="svc-tag">EU AI Act</span><span class="svc-tag">GDPR</span><span class="svc-tag">Agent Design</span></div>
-    </div>
-    <div class="svc">
-      <div class="svc-num">02</div>
-      <div class="svc-title">Agent Build & Deploy</div>
-      <div class="svc-price">From €3,000 / project</div>
-      <div class="svc-desc">I design, build, and deploy production-grade AI agents for your organisation. Copilot Studio, Claude API, or custom stack. With compliance built in from day one.</div>
-      <div class="svc-tags"><span class="svc-tag">Copilot Studio</span><span class="svc-tag">Claude API</span><span class="svc-tag">Production</span></div>
-    </div>
-    <div class="svc">
-      <div class="svc-num">03</div>
-      <div class="svc-title">Speaking & Workshops</div>
-      <div class="svc-price">Available for conferences & internal teams</div>
-      <div class="svc-desc">Loop Engineering. AI in enterprise. GDPR + AI Act for teams. Building with Claude. I've presented internally at H&M AI Academy and can bring the same to your audience.</div>
-      <div class="svc-tags"><span class="svc-tag">Keynote</span><span class="svc-tag">Workshop</span><span class="svc-tag">AI Academy</span></div>
-    </div>
-    <div class="svc">
-      <div class="svc-num">04</div>
-      <div class="svc-title">Data Pipeline & BI</div>
-      <div class="svc-price">From €2,000 / project</div>
-      <div class="svc-desc">14 years of real data engineering. BigQuery, Azure Synapse, Power BI, Looker. I build dashboards that actually get used, not just pretty screenshots that age badly.</div>
-      <div class="svc-tags"><span class="svc-tag">BigQuery</span><span class="svc-tag">Power BI</span><span class="svc-tag">Looker</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ BRAND KIT ═══ -->
-<section id="brand">
-  <p class="ey">Your QR · Your brand</p>
-  <h2 class="sh">Meet me <em>anywhere.</em></h2>
-  <p class="sub">One URL. Five audiences. Scan, share, done. Print it, wear it, AirDrop it.</p>
-  <div class="brand-grid">
-    <div class="brand-card">
-      <div class="brand-icon">📱</div>
-      <div class="brand-title">QR Business Card</div>
-      <div class="brand-desc">shamathakur.dev as a QR code. Print on Moo or Vistaprint. Hand to recruiters, investors, conference strangers. One scan, whole universe.</div>
-    </div>
-    <div class="brand-card">
-      <div class="brand-icon">🏷️</div>
-      <div class="brand-title">NFC + AirTag Stickers</div>
-      <div class="brand-desc">Program an NFC sticker to shamathakur.dev. Tap your laptop lid, your notebook, your water bottle. Anyone who taps gets the full site instantly.</div>
-    </div>
-    <div class="brand-card">
-      <div class="brand-icon">🔗</div>
-      <div class="brand-title">Link in Bio</div>
-      <div class="brand-desc">The Sovereign by Source link-in-bio already lives at linkinbio-khaki.vercel.app. Point it to shamathakur.dev as the master hub.</div>
-    </div>
-    <div class="brand-card">
-      <div class="brand-icon">🎤</div>
-      <div class="brand-title">Speaker One-Pager</div>
-      <div class="brand-desc">A single PDF: who you are, what you speak on, 3 talk titles, one QR. For conference organisers who want to book you without hunting for your bio.</div>
-    </div>
-    <div class="brand-card">
-      <div class="brand-icon">📄</div>
-      <div class="brand-title">CV + Portfolio PDF</div>
-      <div class="brand-desc">One-page AI-focused CV with shamathakur.dev as the centrepiece. Tailored versions: FDE edition, Anthropic edition, consultant edition.</div>
-    </div>
-    <div class="brand-card">
-      <div class="brand-icon">✉️</div>
-      <div class="brand-title">Email Signature</div>
-      <div class="brand-desc">shama@shamathakur.dev as your public email. Signature: name, title, URL, LinkedIn, GitHub. Professional-grade in under 5 minutes.</div>
-    </div>
-  </div>
-</section>
-
-<!-- STACK -->
-<section>
-  <p class="ey">Stack</p>
-  <h2 class="sh">Tools I <em>actually</em> use.</h2>
-  <div class="chips">
-    <span class="chip-label">AI & Agents</span>
-    <span class="chip hi">Claude Code</span><span class="chip hi">Anthropic API</span><span class="chip hi">Copilot Studio</span><span class="chip hi">RAG Pipelines</span><span class="chip hi">Context Engineering</span><span class="chip">Loop Engineering</span><span class="chip">ElevenLabs</span><span class="chip">Multi-agent Systems</span>
-    <span class="chip-label">Data & Cloud</span>
-    <span class="chip hi">BigQuery</span><span class="chip hi">Azure Synapse</span><span class="chip hi">Oracle PL/SQL</span><span class="chip hi">IBM DB2</span><span class="chip">SSIS / Pentaho</span><span class="chip">Tealium / TCC</span><span class="chip">Power BI</span><span class="chip">Looker Studio</span><span class="chip">PostgreSQL</span>
-    <span class="chip-label">Build & Ship</span>
-    <span class="chip hi">Python</span><span class="chip hi">React / Next.js</span><span class="chip hi">Vercel CLI</span><span class="chip hi">HTML / CSS / JS</span><span class="chip">Three.js</span><span class="chip">Web Audio API</span><span class="chip">PowerShell</span><span class="chip">Git</span>
-    <span class="chip-label">Compliance</span>
-    <span class="chip hi">EU AI Act</span><span class="chip hi">GDPR</span><span class="chip hi">AIG.1 / AIG.3</span><span class="chip">Risk Classification</span><span class="chip">AI Registry</span>
-  </div>
-</section>
-
-<!-- KOFI -->
-<div class="kofi-strip">
-  <p>Building useful things in public. Support the work if it's added value to yours.</p>
-  <a href="https://ko-fi.com/shamathakur" target="_blank" class="kofi-btn">Support the work →</a>
-</div>
-
-<!-- CTA -->
-<div class="cta-final" id="contact">
-  <h2 class="cta-h">Let's build<br>something real.</h2>
-  <p class="cta-sub">Stockholm. Open to roles, consulting, speaking, and building. No performative meetings.</p>
-  <div class="cta-row">
-    <a href="https://linkedin.com/in/shama-t-b7250632" target="_blank" class="btn btn-primary">LinkedIn</a>
-    <a href="mailto:shama@shamathakur.dev" class="btn btn-ghost">Email</a>
-    <a href="https://sovereignbysource.substack.com" target="_blank" class="btn btn-ghost">Substack</a>
-    <a href="https://github.com/shamathakur77" target="_blank" class="btn btn-ghost">GitHub</a>
-    <a href="https://ko-fi.com/shamathakur" target="_blank" class="btn btn-ghost">Ko-fi</a>
+  <div id="sphere-detail" style="display:none;max-width:460px;margin:0 auto 60px;background:var(--surface);border:1px solid var(--edge);border-radius:14px;padding:24px">
+    <p class="bc-label" id="sd-label"></p>
+    <h3 style="font-size:22px;margin-bottom:12px" id="sd-name"></h3>
+    <div id="sd-bars" class="bar-group"></div>
+    <div id="sd-tags" style="margin-top:12px"></div>
+    <a id="sd-link" href="#" target="_blank" class="bc-link" style="margin-top:16px;display:inline-flex">Explore area →</a>
   </div>
 </div>
 
+<!-- ========== JOURNEY PAGE ========== -->
+<div id="pg-journey" class="pg">
+  <div class="section-hd">
+    <p class="eyebrow">Your 5-dimension journey</p>
+    <h2>Month by month, <em>step by step</em></h2>
+    <p>Every action, in the order that actually matters. Scroll to reveal.</p>
+  </div>
+  <div class="journey-track">
+    <div class="journey-line"></div>
+    <!-- nodes injected by JS -->
+  </div>
+</div>
+
+<!-- ========== INSIGHTS PAGE ========== -->
+<div id="pg-insights" class="pg">
+  <div class="section-hd">
+    <p class="eyebrow">Data insights</p>
+    <h2>The numbers that <em>decide it</em></h2>
+    <p>School scores, commute times, community density — all in one place.</p>
+  </div>
+  <div class="insights-bento" id="bento-grid"></div>
+</div>
+
+<!-- FOOTER -->
 <footer>
-  <span>Shama Thakur · shamathakur.dev · Stockholm 2026</span>
+  <div class="ft-logo">Stockholm Expat Compass · Built by Shama Thakur</div>
   <div class="ft-links">
     <a href="https://instagram.com/shama_thakur77" target="_blank">Instagram</a>
+    <a href="https://substack.com/@shamathakur" target="_blank">Substack</a>
+    <a href="https://linkedin.com/in/shama-t-b7250632" target="_blank">LinkedIn</a>
     <a href="https://medium.com/@shamathakur77" target="_blank">Medium</a>
-    <a href="https://pinterest.com/thkrshama" target="_blank">Pinterest</a>
-    <a href="https://shamathakur.carrd.co" target="_blank">Carrd</a>
-    <a href="https://ko-fi.com/shamathakur" target="_blank">Ko-fi</a>
+    <a href="https://shamathakur.carrd.co" target="_blank">Website</a>
+    <a href="https://sovereignbysource.substack.com" target="_blank">Sovereign by Source</a>
   </div>
+  <a href="https://ko-fi.com/shamathakur" target="_blank" class="kofi">☕ Support the work</a>
 </footer>
 
 <script>
-// ── VISITOR MODE PANELS ──
-function showPanel(id) {
-  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  const p = document.getElementById('panel-' + id);
-  if(p) p.classList.add('active');
+// ============================================================
+// CURSOR
+// ============================================================
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}animRing();
+
+// Ripple on click
+document.addEventListener('click',e=>{
+  const r=document.createElement('div');
+  r.className='ripple';
+  r.style.cssText=`left:${e.clientX}px;top:${e.clientY}px;width:30px;height:30px;background:rgba(201,168,76,.25)`;
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(),700);
+  playTick();
+});
+
+// ============================================================
+// AUDIO — Web Audio API ASMR sounds
+// ============================================================
+let audioCtx=null,audioOn=false;
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function playTick(){
+  if(!audioOn)return;
+  const ctx=getCtx();
+  const o=ctx.createOscillator();const g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.type='sine';o.frequency.setValueAtTime(880,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+.06);
+  g.gain.setValueAtTime(.04,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.1);
+  o.start();o.stop(ctx.currentTime+.1);
+}
+function playChime(freq=523){
+  if(!audioOn)return;
+  const ctx=getCtx();
+  const o=ctx.createOscillator();const g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.type='triangle';o.frequency.setValueAtTime(freq,ctx.currentTime);
+  g.gain.setValueAtTime(.08,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.6);
+  o.start();o.stop(ctx.currentTime+.7);
+}
+function playSuccess(){
+  if(!audioOn)return;
+  [523,659,784].forEach((f,i)=>setTimeout(()=>playChime(f),i*80));
+}
+function toggleAudio(){
+  audioOn=!audioOn;
+  document.getElementById('audio-toggle').textContent=audioOn?'🔊':'🔇';
+  if(audioOn){getCtx();playSuccess();}
 }
 
-// ── ROTATING TITLE ──
-const titles = ['AI Systems Engineer','Loop Architect','Data Engineering Lead','EU AI Act Specialist','Builder of 100+ Things','Forward Deployed Engineer','Copilot Studio Architect','RAG Pipeline Designer','Vibe Coder · Ship First','Manifesting Generator 3/5'];
-let ti = 0, ci = 0, deleting = false;
-const el = document.getElementById('rotating-text');
-function typeEffect() {
-  const target = titles[ti];
-  if(!deleting) {
-    el.textContent = target.slice(0, ++ci);
-    if(ci === target.length) { deleting = true; setTimeout(typeEffect, 1800); return; }
-  } else {
-    el.textContent = target.slice(0, --ci);
-    if(ci === 0) { deleting = false; ti = (ti+1) % titles.length; }
+// Hover sound
+document.querySelectorAll('button,a,.bcard,.tree-node,.mm-node,.area-sphere,.check-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{if(audioOn)playTick()});
+});
+
+// ============================================================
+// STAR FIELD
+// ============================================================
+(function(){
+  const c=document.getElementById('stars');
+  const ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function init(){
+    W=c.width=window.innerWidth;H=c.height=window.innerHeight;
+    stars=Array.from({length:160},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,s:Math.random()*.4+.1,o:Math.random()}));
   }
-  setTimeout(typeEffect, deleting ? 40 : 70);
-}
-typeEffect();
-
-// ── GOLD CURSOR TRAIL ──
-const canvas = document.getElementById('trail-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-const particles = [];
-document.addEventListener('mousemove', e => {
-  for(let i = 0; i < 2; i++) {
-    particles.push({
-      x: e.clientX, y: e.clientY,
-      vx: (Math.random()-.5)*.6, vy: (Math.random()-.5)*.6 - .4,
-      life: 1, size: Math.random()*2.5+.5
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.o+=Math.sin(Date.now()*.001*s.s)*.003;
+      s.o=Math.max(.05,Math.min(.7,s.o));
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(168,212,230,${s.o})`;ctx.fill();
     });
+    requestAnimationFrame(draw);
   }
-});
-function animTrail() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  for(let i = particles.length-1; i >= 0; i--) {
-    const p = particles[i];
-    p.x += p.vx; p.y += p.vy; p.life -= 0.025;
-    if(p.life <= 0) { particles.splice(i,1); continue; }
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(201,168,76,${p.life * 0.5})`;
-    ctx.fill();
-  }
-  requestAnimationFrame(animTrail);
-}
-animTrail();
+  init();draw();
+  window.addEventListener('resize',init);
+})();
 
-// ── SCROLL REVEAL ──
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='none'; } });
-}, {threshold:.08});
-document.querySelectorAll('.b,.svc,.brand-card,.tl-content').forEach(el => {
-  el.style.cssText += ';opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease';
-  io.observe(el);
-});
+// ============================================================
+// PAGE ROUTING
+// ============================================================
+const pages=['hero','tree','mindmap','viz3d','journey','insights'];
+function showPage(id,btn){
+  pages.forEach((p,i)=>{
+    const el=document.getElementById('pg-'+p);
+    el.classList.toggle('show',p===id);
+    document.querySelectorAll('.pg-dot')[i].classList.toggle('on',p===id);
+  });
+  document.querySelectorAll('.nl').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  window.scrollTo(0,0);
+  playChime(660);
+  if(id==='hero')animCounters();
+  if(id==='tree')initTree();
+  if(id==='mindmap')initMindmap();
+  if(id==='viz3d')init3D();
+  if(id==='journey')initJourney();
+  if(id==='insights')initInsights();
+}
+
+// ============================================================
+// HERO COUNTERS
+// ============================================================
+function animCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=+el.dataset.count;
+    let n=0;const step=target/40;
+    const t=setInterval(()=>{
+      n=Math.min(n+step,target);
+      el.textContent=Math.floor(n)+(target>10?'+':'');
+      if(n>=target)clearInterval(t);
+    },30);
+  });
+}
+animCounters();
+
+// ============================================================
+// DECISION TREE
+// ============================================================
+const TREE={
+  id:'root',label:'Where should we live?',icon:'🧭',color:'var(--teal)',
+  info:{title:'The central question',body:'Everything flows from two coordinates: your offices and your school priority. Answer these and the map resolves.',link:'https://www.stockholmshem.se',linkLabel:'Stockholm housing'},
+  children:[
+    {id:'commute',label:'Commute first',icon:'🚇',color:'var(--gold)',
+     info:{title:'Optimise for commute',body:'Two offices pulling in different directions? Find the SL sweet spot. Aim for under 30 min each.',link:'https://sl.se',linkLabel:'Plan your route on SL'},
+     children:[
+       {id:'north',label:'Both offices north',icon:'⬆',color:'var(--ice)',info:{title:'Both offices north of city',body:'Sollentuna, Täby, Danderyd — short commutes, quiet, green. IES Sollentuna + Täby nearby.',link:'https://www.taby.se/forskola-och-skola',linkLabel:'Täby schools'}},
+       {id:'split',label:'Split city/south',icon:'↔',color:'var(--ice)',info:{title:'Split offices',body:'Danderyd or Lidingö is the classic sweet spot — 20 min to city, 30 min to Sickla/Nacka via car.',link:'https://sl.se/sv/reseplanering',linkLabel:'Plan both commutes'}},
+       {id:'south',label:'Both offices south/east',icon:'⬇',color:'var(--ice)',info:{title:'Both offices south or east',body:'Nacka, Värmdö, Hammarby — look at IES Nacka or international schools on Lidingö.',link:'https://www.nacka.se/barn-utbildning-fritid',linkLabel:'Nacka education'}}
+     ]},
+    {id:'school',label:'School first',icon:'🏫',color:'var(--rose)',
+     info:{title:'School drives the area',body:'Lock down the school queue first, then choose housing within reach. Not the other way around.',link:'https://engelska.se',linkLabel:'IES schools Stockholm'},
+     children:[
+       {id:'ies',label:'IES / bilingual',icon:'🇸🇪🇬🇧',color:'#e8526a55',info:{title:'IES Internationella Engelska Skolan',body:'Free, bilingual EN+SV, structured, expat-popular. Multiple Stockholm locations. Queue now at engelska.se — wait can be 3–5 years.',link:'https://engelska.se/sv/vara-skolor',linkLabel:'All IES Stockholm locations →'},
+        children:[
+          {id:'ies-taby',label:'IES Täby',icon:'📍',color:null,info:{title:'IES Täby',body:'Years 4–9. Täby Centrum. Strong results, calm environment. Register: engelska.se/sv/vara-skolor/taby',link:'https://engelska.se/sv/vara-skolor/taby/ko-antagning',linkLabel:'Join IES Täby queue →'}},
+          {id:'ies-nacka',label:'IES Nacka',icon:'📍',color:null,info:{title:'IES Nacka',body:'F–9. Near Sickla. Ideal if one office is in Nacka area.',link:'https://engelska.se/sv/vara-skolor/nacka',linkLabel:'IES Nacka info →'}},
+          {id:'ies-sol',label:'IES Sollentuna',icon:'📍',color:null,info:{title:'IES Sollentuna',body:'F–9. Excellent option for families in Sollentuna or Kista corridor.',link:'https://engelska.se/sv/vara-skolor/sollentuna',linkLabel:'IES Sollentuna info →'}}
+        ]},
+       {id:'futura',label:'Futuraskolan (förskola)',icon:'🌍',color:'#3dd9c455',info:{title:'Futuraskolan International Preschool',body:'Bilingual EN+SV, IEYC curriculum, real expat community. Ages 1–6. Multiple Stockholm locations.',link:'https://futuraskolan.se/preschools',linkLabel:'Find your nearest Futuraskolan →'}},
+       {id:'iss',label:'International School of Stockholm',icon:'🎓',color:'#c9a84c55',info:{title:'ISS — International School of Stockholm',body:'Full English IB education, ages 3–18. Lidingö. Fees apply (~150,000 kr/year). For families on international contracts.',link:'https://internationella.se',linkLabel:'ISS website →'}}
+     ]},
+    {id:'community',label:'Community first',icon:'👨‍👩‍👧',color:'var(--ice)',
+     info:{title:'Find your people first',body:'Expat density matters more than most families expect. Danderyd and Lidingö have the highest international family concentration.',link:'https://www.expat.com/en/expat-guide/europe/sweden/stockholm.html',linkLabel:'Expat guide Stockholm'},
+     children:[
+       {id:'indian',label:'South Asian community',icon:'🪔',color:null,info:{title:'South Asian expat families',body:'Largest concentrations: Sollentuna, Kista, parts of Solna. Active Facebook groups: Desi Stockholm, Indians in Sweden.',link:'https://www.facebook.com/groups/desistockholm',linkLabel:'Desi Stockholm Facebook →'}},
+       {id:'intl',label:'Pan-international',icon:'🌐',color:null,info:{title:'Pan-international community',body:'Danderyd, Lidingö, Täby. High density of diplomatic, tech, and corporate expat families.',link:'https://www.internations.org/stockholm-expats',linkLabel:'InterNations Stockholm →'}}
+     ]}
+  ]
+};
+
+let activeNode=null;
+function initTree(){
+  const canvas=document.getElementById('tree-canvas');
+  const svg=document.getElementById('tree-svg');
+  canvas.innerHTML='';
+  canvas.appendChild(svg);
+  svg.innerHTML='';
+  const W=canvas.offsetWidth||800;
+  const H=680;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  canvas.style.height=H+'px';
+  const positions={};
+  layoutTree(TREE,W/2,60,W,positions,0);
+  drawEdges(TREE,positions,svg);
+  drawNodes(TREE,positions,canvas);
+}
+
+function layoutTree(node,x,y,w,pos,depth){
+  pos[node.id]={x,y};
+  if(!node.children||!node.children.length)return;
+  const n=node.children.length;
+  const spread=Math.min(w*.85,n*200);
+  node.children.forEach((c,i)=>{
+    const cx=x-spread/2+spread*(i/(n-1||1));
+    const cy=y+120+depth*10;
+    layoutTree(c,cx,cy,spread/n,pos,depth+1);
+  });
+}
+
+function drawEdges(node,pos,svg){
+  if(!node.children)return;
+  node.children.forEach(c=>{
+    const p=pos[node.id],q=pos[c.id];
+    const line=document.createElementNS('http://www.w3.org/2000/svg','path');
+    const mx=(p.x+q.x)/2,cp1y=p.y+40,cp2y=q.y-40;
+    line.setAttribute('d',`M${p.x},${p.y+28} C${p.x},${cp1y} ${q.x},${cp2y} ${q.x},${q.y-28}`);
+    line.setAttribute('stroke','rgba(30,45,61,0.8)');
+    line.setAttribute('stroke-width','1.5');
+    line.setAttribute('fill','none');
+    line.setAttribute('id','edge-'+node.id+'-'+c.id);
+    svg.appendChild(line);
+    drawEdges(c,pos,svg);
+  });
+}
+
+function drawNodes(node,pos,canvas){
+  const p=pos[node.id];
+  const div=document.createElement('div');
+  div.className='tree-node'+(node.id==='root'?' root':'')+(node.children&&node.children.length?'':' leaf');
+  div.style.cssText=`left:${p.x}px;top:${p.y}px;transform:translate(-50%,-50%);z-index:5`;
+  if(node.color&&node.id!=='root')div.style.borderColor=node.color;
+  div.innerHTML=`<div class="tn-icon">${node.icon}</div><div class="tn-label">${node.label}</div>`;
+  div.addEventListener('click',()=>{
+    document.querySelectorAll('.tree-node').forEach(n=>n.classList.remove('active'));
+    div.classList.add('active');
+    activeNode=node.id;
+    showTreeInfo(node.info);
+    // Highlight edges
+    document.querySelectorAll('.tree-svg path').forEach(p=>{p.setAttribute('stroke','rgba(30,45,61,0.5)')});
+    highlightPath(TREE,node.id);
+    playSuccess();
+  });
+  canvas.appendChild(div);
+  if(node.children)node.children.forEach(c=>drawNodes(c,pos,canvas));
+}
+
+function highlightPath(tree,targetId,path=[]){
+  if(tree.id===targetId){
+    path.forEach(pid=>{
+      const edge=document.getElementById('edge-'+pid.from+'-'+pid.to);
+      if(edge)edge.setAttribute('stroke',pid.color||'rgba(201,168,76,0.6)');
+    });
+    return true;
+  }
+  if(!tree.children)return false;
+  for(const c of tree.children){
+    if(highlightPath(c,targetId,[...path,{from:tree.id,to:c.id,color:'rgba(201,168,76,0.6)'}]))return true;
+  }
+  return false;
+}
+
+function showTreeInfo(info){
+  if(!info)return;
+  const box=document.getElementById('tree-info');
+  box.style.display='block';
+  document.getElementById('ti-label').textContent='Selected node';
+  document.getElementById('ti-title').textContent=info.title;
+  document.getElementById('ti-body').textContent=info.body;
+  const lnk=document.getElementById('ti-link');
+  lnk.href=info.link||'#';
+  lnk.textContent=(info.linkLabel||'Visit resource')+' →';
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ============================================================
+// MINDMAP
+// ============================================================
+const MM_NODES=[
+  {id:'center',label:'Stockholm\nExpat Life',sub:'',x:.5,y:.5,r:60,color:'#c9a84c',bg:'rgba(201,168,76,0.15)',info:'The full picture: where to live, where your child learns, where your people are.',link:'https://www.stockholmshem.se'},
+  {id:'schools',label:'Schools',sub:'30+ options',x:.22,y:.25,r:44,color:'#3dd9c4',bg:'rgba(61,217,196,0.1)',info:'Kommunal (free, proximity), friskola (free, queue), international (fees). The IES network is the expat default.',link:'https://engelska.se'},
+  {id:'ies',label:'IES',sub:'Bilingual EN+SV',x:.08,y:.12,r:30,color:'#3dd9c4',bg:'rgba(61,217,196,0.08)',info:'Free. Structured. Half-day English. Very popular with expats. 5+ locations in Stockholm. Queue now.',link:'https://engelska.se/sv/vara-skolor'},
+  {id:'futura',label:'Futuraskolan',sub:'IEYC förskola',x:.18,y:.06,r:26,color:'#3dd9c4',bg:'rgba(61,217,196,0.06)',info:'Best bilingual preschool network. EN+SV. Real international staff and families.',link:'https://futuraskolan.se'},
+  {id:'iss',label:'ISS',sub:'Full English IB',x:.3,y:.08,r:24,color:'#a8d4e6',bg:'rgba(168,212,230,0.06)',info:'International School of Stockholm, Lidingö. Full English, IB, ages 3–18. Fees apply.',link:'https://internationella.se'},
+  {id:'areas',label:'Areas',sub:'12 mapped',x:.78,y:.22,r:44,color:'#e8526a',bg:'rgba(232,82,106,0.1)',info:'Danderyd, Täby, Lidingö, Nacka, Sollentuna, Solna — each has a different commute/school/community tradeoff.',link:'https://www.statistikomstockholm.se'},
+  {id:'danderyd',label:'Danderyd',sub:'Top expat area',x:.88,y:.1,r:28,color:'#e8526a',bg:'rgba(232,82,106,0.08)',info:'Highest expat concentration north of city. Britanniska Skolan, access to IES Täby. Expensive but worth it.',link:'https://www.danderyd.se/bo-och-leva'},
+  {id:'taby',label:'Täby',sub:'IES + Futuraskolan',x:.96,y:.25,r:26,color:'#e8526a',bg:'rgba(232,82,106,0.06)',info:'Great value vs Danderyd. Futuraskolan Näsby Park, IES Täby both here. Good SL connections.',link:'https://www.taby.se'},
+  {id:'nacka',label:'Nacka',sub:'South/east anchor',x:.9,y:.4,r:24,color:'#e8526a',bg:'rgba(232,82,106,0.06)',info:'Best for Sickla/Nacka office workers. IES Nacka, great nature, growing expat base.',link:'https://www.nacka.se'},
+  {id:'community',label:'Community',sub:'Find your people',x:.25,y:.75,r:44,color:'#c9a84c',bg:'rgba(201,168,76,0.1)',info:'Expat community is the invisible infrastructure. Online groups, förskola pickups, and neighbourhood playgrounds are where it lives.',link:'https://www.internations.org/stockholm-expats'},
+  {id:'desi',label:'Desi Stockholm',sub:'South Asian network',x:.12,y:.88,r:28,color:'#c9a84c',bg:'rgba(201,168,76,0.08)',info:'Active Facebook group for Indian and South Asian families in Stockholm. Real advice, school recs, local tips.',link:'https://www.facebook.com/groups/desistockholm'},
+  {id:'internations',label:'InterNations',sub:'Pan-expat',x:.28,y:.92,r:24,color:'#c9a84c',bg:'rgba(201,168,76,0.06)',info:'Events, connections, job leads for the wider expat community.',link:'https://www.internations.org/stockholm-expats'},
+  {id:'sl',label:'SL',sub:'Public transport',x:.75,y:.75,r:36,color:'#a8d4e6',bg:'rgba(168,212,230,0.08)',info:'Stockholm\'s public transit. Key to evaluating any area. Journey planner: sl.se. 30 min commute is the target.',link:'https://sl.se'},
+  {id:'system',label:'The System',sub:'How Sweden works',x:.5,y:.88,r:38,color:'#6b8096',bg:'rgba(107,128,150,0.1)',info:'School choice is free. You apply, you are not assigned. Skolval opens January each year. Kommunal = proximity. Friskola = queue.',link:'https://www.skolverket.se'},
+  {id:'skolkoll',label:'Skolkoll',sub:'School data',x:.38,y:.95,r:22,color:'#6b8096',bg:'rgba(107,128,150,0.06)',info:'Official school quality data — teacher qualifications, inspection results, academic scores. Always check before deciding.',link:'https://skolkoll.se'},
+];
+
+const MM_EDGES=[
+  ['center','schools'],['center','areas'],['center','community'],['center','sl'],['center','system'],
+  ['schools','ies'],['schools','futura'],['schools','iss'],
+  ['areas','danderyd'],['areas','taby'],['areas','nacka'],
+  ['community','desi'],['community','internations'],
+  ['system','skolkoll'],['ies','taby'],['ies','nacka'],
+];
+
+function initMindmap(){
+  const canvas=document.getElementById('mindmap-canvas');
+  const svg=document.getElementById('mm-svg');
+  const tooltip=document.getElementById('mm-tooltip');
+  const W=canvas.offsetWidth||900,H=700;
+  canvas.style.height=H+'px';
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  canvas.innerHTML='';
+  canvas.appendChild(svg);
+  svg.innerHTML='';
+
+  // Draw edges
+  MM_EDGES.forEach(([a,b])=>{
+    const na=MM_NODES.find(n=>n.id===a),nb=MM_NODES.find(n=>n.id===b);
+    if(!na||!nb)return;
+    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',na.x*W);line.setAttribute('y1',na.y*H);
+    line.setAttribute('x2',nb.x*W);line.setAttribute('y2',nb.y*H);
+    line.setAttribute('stroke',`${na.color}30`);
+    line.setAttribute('stroke-width','1.5');
+    svg.appendChild(line);
+  });
+
+  // Draw nodes
+  MM_NODES.forEach(node=>{
+    const div=document.createElement('div');
+    div.className='mm-node';
+    const s=node.r*2;
+    div.style.cssText=`
+      left:${node.x*W}px;top:${node.y*H}px;
+      width:${s}px;height:${s}px;
+      border-radius:50%;
+      background:${node.bg};
+      border:1px solid ${node.color}40;
+      transform:translate(-50%,-50%);
+      position:absolute;
+      cursor:none;
+      transition:all .3s;
+      display:flex;align-items:center;justify-content:center;
+      flex-direction:column;text-align:center;padding:8px;
+      box-shadow:0 0 ${node.r*.5}px ${node.color}15;
+    `;
+    div.innerHTML=`
+      <div class="mm-label" style="color:${node.color};font-size:${Math.max(9,node.r*.22)}px">${node.label}</div>
+      ${node.sub?`<div class="mm-sub" style="font-size:${Math.max(8,node.r*.16)}px">${node.sub}</div>`:''}
+    `;
+    div.addEventListener('mouseenter',e=>{
+      div.style.transform='translate(-50%,-50%) scale(1.2)';
+      div.style.zIndex='30';
+      div.style.boxShadow=`0 0 40px ${node.color}35`;
+      tooltip.innerHTML=`<h4>${node.label}</h4><p>${node.info}</p>${node.link?`<br><a href="${node.link}" target="_blank">Open resource →</a>`:''}`;
+      tooltip.classList.add('show');
+      const r=canvas.getBoundingClientRect();
+      let tx=node.x*W+node.r+16,ty=node.y*H-60;
+      if(tx+220>W)tx=node.x*W-node.r-230;
+      if(ty<0)ty=0;
+      tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
+      if(audioOn)playTick();
+    });
+    div.addEventListener('mouseleave',()=>{
+      div.style.transform='translate(-50%,-50%) scale(1)';
+      div.style.zIndex='1';
+      div.style.boxShadow=`0 0 ${node.r*.5}px ${node.color}15`;
+      tooltip.classList.remove('show');
+    });
+    div.addEventListener('click',()=>{
+      if(node.link)window.open(node.link,'_blank');
+      playSuccess();
+    });
+    canvas.appendChild(div);
+    tooltip.style.position='absolute';
+    canvas.appendChild(tooltip);
+  });
+}
+
+// ============================================================
+// 3D AREAS
+// ============================================================
+const AREAS3D=[
+  {name:'Danderyd',score:95,commute:90,expat:98,school:95,cost:55,color:'#c9a84c',link:'https://www.danderyd.se',tags:['High expat','Britanniska','IES nearby','Top schools']},
+  {name:'Täby',score:88,commute:75,expat:82,school:90,cost:72,color:'#3dd9c4',link:'https://www.taby.se',tags:['IES Täby','Futuraskolan','Good value','Quiet']},
+  {name:'Lidingö',score:85,commute:80,expat:92,school:88,cost:50,color:'#a8d4e6',link:'https://www.lidingo.se',tags:['ISS (paid)','Scenic','Diplomatic','Exclusive']},
+  {name:'Nacka',score:80,commute:85,expat:70,school:78,cost:75,color:'#e8526a',link:'https://www.nacka.se',tags:['IES Nacka','Sickla office','Growing','Nature']},
+  {name:'Sollentuna',score:76,commute:88,expat:65,school:75,cost:82,color:'#f0c96e',link:'https://www.sollentuna.se',tags:['IES Sollentuna','Kista access','South Asian','Affordable']},
+  {name:'Solna',score:72,commute:92,expat:60,school:68,cost:78,color:'#6b8096',link:'https://www.solna.se',tags:['Central','Kista access','Urban','Diverse']},
+];
+
+function init3D(){
+  const world=document.getElementById('cube-world');
+  world.innerHTML='';
+  const r=200;
+  AREAS3D.forEach((area,i)=>{
+    const angle=(i/AREAS3D.length)*Math.PI*2;
+    const elevation=(i%2===0?1:-1)*30;
+    const x=Math.cos(angle)*r;
+    const z=Math.sin(angle)*r;
+    const y=elevation;
+    const size=40+area.score*.35;
+    const div=document.createElement('div');
+    div.className='area-sphere';
+    div.style.cssText=`
+      width:${size}px;height:${size}px;
+      background:radial-gradient(circle at 35% 35%,${area.color}cc,${area.color}44);
+      border:1px solid ${area.color}66;
+      left:50%;top:50%;
+      transform:translate(-50%,-50%) translate3d(${x}px,${y}px,${z}px);
+      font-family:'Space Mono',monospace;
+    `;
+    div.innerHTML=`<div class="sphere-score">${area.score}</div><div class="sphere-label">${area.name}</div>`;
+    div.addEventListener('click',()=>showSphereDetail(area));
+    world.appendChild(div);
+  });
+}
+
+function showSphereDetail(area){
+  const box=document.getElementById('sphere-detail');
+  box.style.display='block';
+  document.getElementById('sd-label').textContent='Area profile';
+  document.getElementById('sd-name').textContent=area.name;
+  document.getElementById('sd-link').href=area.link;
+  document.getElementById('sd-tags').innerHTML=area.tags.map(t=>`<span class="badge badge-gold">${t}</span>`).join('');
+  document.getElementById('sd-bars').innerHTML=`
+    ${makeBar('Expat score',area.expat,'var(--gold)')}
+    ${makeBar('School quality',area.school,'var(--teal)')}
+    ${makeBar('Commute ease',area.commute,'var(--ice)')}
+    ${makeBar('Affordability',area.cost,'var(--rose)')}
+  `;
+  setTimeout(()=>{
+    document.querySelectorAll('.bar-fill').forEach(b=>{
+      b.style.width=b.dataset.val+'%';
+    });
+  },100);
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+  playSuccess();
+}
+function makeBar(label,val,color){
+  return `<div class="bar-row">
+    <div class="bar-name">${label}</div>
+    <div class="bar-wrap"><div class="bar-fill" data-val="${val}" style="background:${color};width:0%"></div></div>
+    <div class="bar-val">${val}</div>
+  </div>`;
+}
+
+// ============================================================
+// JOURNEY (5D timeline)
+// ============================================================
+const JOURNEY=[
+  {side:'right',phase:'Dimension 1 · Space',color:'var(--teal)',title:'Map the sweet spot',body:'Enter both office locations into the Area Finder. Aim for under 30 min from both. This narrows you to 2–3 neighbourhoods before you look at a single school.',link:'https://sl.se',linkLabel:'SL journey planner',tags:['commute','geography']},
+  {side:'left',phase:'Dimension 2 · School',color:'var(--gold)',title:'Register IES queue — today',body:'Free. No commitment. Queue position is the only thing that matters and it compounds over time. Go to engelska.se, pick your 2 closest locations, register both.',link:'https://engelska.se/sv/vara-skolor',linkLabel:'All IES locations',tags:['school','action']},
+  {side:'right',phase:'Dimension 2 · School',color:'var(--gold)',title:'Contact Futuraskolan for förskola',body:'Bilingual EN+SV, IEYC, real international community. If your child is under 6, this is where you call first. Multiple Stockholm locations.',link:'https://futuraskolan.se/preschools',linkLabel:'Futuraskolan preschools',tags:['förskola','bilingual']},
+  {side:'left',phase:'Dimension 3 · Community',color:'var(--rose)',title:'Find your people before you move',body:'Join Desi Stockholm, Indians in Sweden, or Expat Moms Stockholm on Facebook. Ask real parents what förskola they chose and why. This data is better than any website.',link:'https://www.facebook.com/groups/desistockholm',linkLabel:'Desi Stockholm →',tags:['community','support']},
+  {side:'right',phase:'Dimension 3 · Community',color:'var(--rose)',title:'Visit 2 förskolor at 4pm on a weekday',body:'Pickup time tells you everything: the energy, the staff, the other families. 20 minutes in person is worth hours of research.',link:'https://www.taby.se/forskola-och-skola',linkLabel:'Täby förskola info',tags:['visit','decision']},
+  {side:'left',phase:'Dimension 4 · System',color:'var(--ice)',title:'Understand skolval — it opens in January',body:'In most Swedish municipalities, school applications open every January for the following autumn. You choose — you are not assigned. Missing January means waiting another year.',link:'https://www.skolverket.se',linkLabel:'Skolverket guide',tags:['admin','deadline']},
+  {side:'right',phase:'Dimension 4 · System',color:'var(--ice)',title:'Check Skolkoll for every school you consider',body:'Qualified teacher %, inspection history, academic results, SALSA value-added score. Takes 5 minutes per school and removes surprises.',link:'https://skolkoll.se',linkLabel:'Open Skolkoll',tags:['data','research']},
+  {side:'left',phase:'Dimension 5 · Future',color:'var(--gold2)',title:'IB or gymnasium planning (Years 7–9)',body:'For children nearing secondary school: International School Stockholm offers IB to 18. Swedish gymnasium (16–19) is also strong if Swedish is established. Plan 5 years ahead.',link:'https://internationella.se',linkLabel:'ISS information',tags:['long-term','IB']},
+  {side:'right',phase:'Dimension 5 · Future',color:'var(--gold2)',title:'You are already doing it right',body:'Researching this early, thinking in systems, asking the right questions — you are 3 years ahead of most expat families who arrive and figure it out reactively.',link:'https://sovereignbysource.substack.com',linkLabel:'Sovereign by Source',tags:['✓','momentum']},
+];
+
+function initJourney(){
+  const track=document.querySelector('.journey-track');
+  const line=track.querySelector('.journey-line')||document.createElement('div');
+  track.innerHTML='';
+  const ln=document.createElement('div');ln.className='journey-line';track.appendChild(ln);
+
+  JOURNEY.forEach((j,i)=>{
+    const node=document.createElement('div');
+    node.className=`journey-node ${j.side}`;
+    node.innerHTML=`
+      <div class="j-dot" style="background:${j.color};color:${j.color}"></div>
+      <div class="j-card">
+        <p class="j-phase" style="color:${j.color}">${j.phase}</p>
+        <h3 class="j-title">${j.title}</h3>
+        <p class="j-body">${j.body}</p>
+        <a href="${j.link}" target="_blank" class="j-link">${j.linkLabel}</a>
+        <div class="j-tags">${j.tags.map(t=>`<span class="j-tag badge-teal badge">${t}</span>`).join('')}</div>
+      </div>
+    `;
+    track.appendChild(node);
+    setTimeout(()=>node.classList.add('visible'),i*120+100);
+  });
+
+  // scroll reveal
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(audioOn)playChime(440+Math.random()*200)}});
+  },{threshold:.2});
+  document.querySelectorAll('.journey-node').forEach(n=>obs.observe(n));
+}
+
+// ============================================================
+// INSIGHTS BENTO
+// ============================================================
+function initInsights(){
+  const grid=document.getElementById('bento-grid');
+  grid.innerHTML=`
+  <div class="bcard bc-2 reveal">
+    <p class="bc-label">Why this matters</p>
+    <h2 class="bc-title">The IES queue is the single highest-leverage action available to you right now.</h2>
+    <p class="bc-body">It's free, it costs 10 minutes, and the position you earn today compounds for years. Families who register when their child is 2 often get a place before they even need it.</p>
+    <a href="https://engelska.se/sv/vara-skolor" target="_blank" class="bc-link">Register IES queue</a>
+  </div>
+  <div class="bcard bc-1 reveal">
+    <p class="bc-label">Schools researched</p>
+    <div class="bc-num" style="color:var(--gold)">30<span style="font-size:28px;color:var(--muted)">+</span></div>
+    <p class="bc-body">From Futuraskolan to ISS to every kommunal school in Täby and Nacka.</p>
+  </div>
+  <div class="bcard bc-3 reveal">
+    <p class="bc-label">Area comparison · expat score</p>
+    <div class="bar-group">
+      ${[['Danderyd',95],['Lidingö',92],['Täby',82],['Nacka',70],['Sollentuna',65]].map(([n,v])=>`
+        <div class="bar-row">
+          <div class="bar-name">${n}</div>
+          <div class="bar-wrap"><div class="bar-fill" data-val="${v}" style="background:var(--gold)"></div></div>
+          <div class="bar-val">${v}</div>
+        </div>`).join('')}
+    </div>
+  </div>
+  <div class="bcard bc-3 reveal">
+    <p class="bc-label">School quality · Täby area (meritvärde yr 9)</p>
+    <div class="bar-group">
+      ${[['Hägerneholmsskolan','244.6','var(--teal)'],['National avg','227','var(--muted)'],['Täby avg','253','var(--gold)']].map(([n,v,c])=>`
+        <div class="bar-row">
+          <div class="bar-name">${n}</div>
+          <div class="bar-wrap"><div class="bar-fill" data-val="${Math.round(+v/2.7)}" style="background:${c}"></div></div>
+          <div class="bar-val">${v}</div>
+        </div>`).join('')}
+    </div>
+    <a href="https://skolkoll.se" target="_blank" class="bc-link">Verify on Skolkoll</a>
+  </div>
+  <div class="bcard bc-4 reveal">
+    <p class="bc-label">Avg commute to city</p>
+    <div class="bc-num" style="color:var(--teal)">24<span style="font-size:20px;color:var(--muted)">min</span></div>
+    <p class="bc-body">From Danderyd or Täby via SL pendeltåg</p>
+    <a href="https://sl.se" target="_blank" class="bc-link">Plan on SL</a>
+  </div>
+  <div class="bcard bc-4 reveal">
+    <p class="bc-label">IES locations, Stockholm</p>
+    <div class="bc-num" style="color:var(--rose)">7</div>
+    <p class="bc-body">Free bilingual schools across greater Stockholm. Somewhere is near you.</p>
+    <a href="https://engelska.se/sv/vara-skolor" target="_blank" class="bc-link">Find nearest IES</a>
+  </div>
+  <div class="bcard bc-4 reveal">
+    <p class="bc-label">Max förskola cost (state-subsidised)</p>
+    <div class="bc-num" style="color:var(--gold)">1.8<span style="font-size:20px;color:var(--muted)">k kr</span></div>
+    <p class="bc-body">Per month. Regardless of income above the threshold. Sweden takes care of this.</p>
+    <a href="https://www.skolverket.se/regler-och-ansvar/regler-for-forskola-och-fritidshem/maxtaxa-i-forskola-och-fritidshem" target="_blank" class="bc-link">Maxtaxa info</a>
+  </div>
+  <div class="bcard bc-6 reveal" style="background:linear-gradient(135deg,rgba(61,217,196,.06),var(--surface));border-color:rgba(61,217,196,.2)">
+    <p class="bc-label">Clickable school directory</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px">
+      ${[
+        ['IES — all Stockholm locations','https://engelska.se/sv/vara-skolor','var(--teal)'],
+        ['Futuraskolan preschools','https://futuraskolan.se/preschools','var(--gold)'],
+        ['International School of Stockholm','https://internationella.se','var(--ice)'],
+        ['Britanniska Skolan, Danderyd','https://www.britanniskaskolan.se','var(--rose)'],
+        ['Skolkoll — verify any school','https://skolkoll.se','var(--muted)'],
+        ['Skolverket — how school choice works','https://www.skolverket.se','var(--muted)'],
+        ['Täby skolval portal','https://www.taby.se/forskola-och-skola/grundskola/val-av-skola','var(--gold)'],
+        ['Nacka education portal','https://www.nacka.se/barn-utbildning-fritid','var(--rose)'],
+        ['Sollentuna schools','https://www.sollentuna.se/omsorg-skola-och-fritid/skola','var(--ice)'],
+        ['Desi Stockholm community','https://www.facebook.com/groups/desistockholm','var(--gold)'],
+        ['InterNations Stockholm','https://www.internations.org/stockholm-expats','var(--teal)'],
+        ['SL journey planner','https://sl.se','var(--ice)'],
+      ].map(([l,u,c])=>`<a href="${u}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;font-size:12px;color:${c};text-decoration:none;transition:all .2s;letter-spacing:.03em" onmouseenter="this.style.borderColor='${c}44';this.style.background='rgba(255,255,255,.06)'" onmouseleave="this.style.borderColor='rgba(255,255,255,.06)';this.style.background='rgba(255,255,255,.03)'">${l} ↗</a>`).join('')}
+    </div>
+  </div>`;
+
+  // Animate bars and reveals
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('vis');
+        e.target.querySelectorAll('.bar-fill').forEach(b=>{setTimeout(()=>{b.style.width=b.dataset.val+'%'},200)});
+      }
+    });
+  },{threshold:.15});
+  grid.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // mouse glow on bcards
+  grid.querySelectorAll('.bcard').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=((e.clientX-r.left)/r.width*100).toFixed(1);
+      const y=((e.clientY-r.top)/r.height*100).toFixed(1);
+      card.style.setProperty('--mx',x+'%');
+      card.style.setProperty('--my',y+'%');
+    });
+  });
+}
+
+// ============================================================
+// SELF-TEST SUITE — in-page panel (sandbox-safe)
+// ============================================================
+(function selfTest(){
+  const results=[];
+  const test=(name,fn)=>{try{fn();results.push({name,pass:true})}catch(e){results.push({name,pass:false,err:e.message})}};
+
+  test('DOM: nav exists',()=>{if(!document.querySelector('nav'))throw new Error('No nav')});
+  test('DOM: all 6 pages exist',()=>{pages.forEach(p=>{if(!document.getElementById('pg-'+p))throw new Error('Missing #pg-'+p)})});
+  test('DOM: tree canvas',()=>{if(!document.getElementById('tree-canvas'))throw new Error('Missing tree-canvas')});
+  test('DOM: mindmap canvas',()=>{if(!document.getElementById('mindmap-canvas'))throw new Error('Missing mindmap canvas')});
+  test('DOM: 3D scene',()=>{if(!document.getElementById('scene-3d'))throw new Error('Missing 3d scene')});
+  test('DOM: bento grid',()=>{if(!document.getElementById('bento-grid'))throw new Error('Missing bento-grid')});
+  test('DATA: tree has children',()=>{if(!TREE.children||TREE.children.length<2)throw new Error('Tree data malformed')});
+  test('DATA: mindmap nodes≥10',()=>{if(MM_NODES.length<10)throw new Error('Not enough mindmap nodes')});
+  test('DATA: areas 3D≥5',()=>{if(AREAS3D.length<5)throw new Error('Not enough 3D areas')});
+  test('DATA: journey steps≥8',()=>{if(JOURNEY.length<8)throw new Error('Not enough journey steps')});
+  test('FUNC: showPage exists',()=>{if(typeof showPage!=='function')throw new Error('showPage missing')});
+  test('FUNC: playTick exists',()=>{if(typeof playTick!=='function')throw new Error('playTick missing')});
+  test('FUNC: init3D exists',()=>{if(typeof init3D!=='function')throw new Error('init3D missing')});
+  test('FUNC: initInsights exists',()=>{if(typeof initInsights!=='function')throw new Error('initInsights missing')});
+  test('LINKS: journey links https',()=>{JOURNEY.forEach(j=>{if(!j.link.startsWith('https'))throw new Error('Non-https: '+j.link)})});
+  test('LINKS: area links https',()=>{AREAS3D.forEach(a=>{if(!a.link.startsWith('https'))throw new Error('Non-https: '+a.link)})});
+  test('LINKS: mindmap links https',()=>{MM_NODES.filter(n=>n.link).forEach(n=>{if(!n.link.startsWith('https'))throw new Error('Non-https: '+n.link)})});
+  test('A11Y: audio toggle exists',()=>{if(!document.getElementById('audio-toggle'))throw new Error('Audio toggle missing')});
+  test('A11Y: cursor elements exist',()=>{if(!document.getElementById('cursor'))throw new Error('Cursor missing')});
+
+  const pass=results.filter(r=>r.pass).length;
+  const fail=results.filter(r=>!r.pass);
+  const allPass=fail.length===0;
+
+  // Inject in-page test panel
+  const panel=document.createElement('div');
+  panel.id='test-panel';
+  panel.style.cssText=`
+    position:fixed;bottom:80px;right:20px;z-index:800;
+    background:#0d1318;border:1px solid ${allPass?'#3dd9c4':'#e8526a'};
+    border-radius:12px;padding:14px 16px;max-width:280px;
+    font-family:'Space Mono',monospace;font-size:11px;
+    box-shadow:0 8px 32px rgba(0,0,0,.6);
+    transform:translateX(320px);transition:transform .4s cubic-bezier(.23,1,.32,1);
+  `;
+  panel.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <span style="color:${allPass?'#3dd9c4':'#e8526a'};font-weight:700;letter-spacing:.06em">
+        ${allPass?'✓ ALL SYSTEMS GO':'⚠ ISSUES FOUND'}
+      </span>
+      <button onclick="document.getElementById('test-panel').style.transform='translateX(320px)'"
+        style="background:none;border:none;color:#6b8096;cursor:pointer;font-size:14px;padding:0 4px">×</button>
+    </div>
+    <div style="color:#6b8096;margin-bottom:10px;font-size:10px;letter-spacing:.04em">${pass}/${results.length} tests passed</div>
+    <div style="display:flex;flex-direction:column;gap:5px;max-height:200px;overflow-y:auto">
+      ${results.map(r=>`
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="color:${r.pass?'#3dd9c4':'#e8526a'};flex-shrink:0">${r.pass?'✓':'✗'}</span>
+          <span style="color:${r.pass?'#6b8096':'#e8e4dc'};line-height:1.5">${r.name}${r.err?'<br><span style="color:#e8526a;font-size:10px">'+r.err+'</span>':''}</span>
+        </div>`).join('')}
+    </div>
+  `;
+  document.body.appendChild(panel);
+  setTimeout(()=>{panel.style.transform='translateX(0)'},800);
+  setTimeout(()=>{if(allPass)panel.style.transform='translateX(320px)'},5000);
+
+  // Small persistent status pill
+  const pill=document.createElement('div');
+  pill.style.cssText=`
+    position:fixed;bottom:80px;right:20px;z-index:799;
+    background:${allPass?'rgba(61,217,196,.12)':'rgba(232,82,106,.12)'};
+    border:1px solid ${allPass?'rgba(61,217,196,.3)':'rgba(232,82,106,.3)'};
+    border-radius:20px;padding:6px 12px;
+    font-family:'Space Mono',monospace;font-size:10px;
+    color:${allPass?'#3dd9c4':'#e8526a'};
+    cursor:pointer;letter-spacing:.06em;
+    transition:all .2s;
+  `;
+  pill.textContent=`${allPass?'✓':'⚠'} ${pass}/${results.length} tests`;
+  pill.onclick=()=>{
+    const p=document.getElementById('test-panel');
+    const hidden=p.style.transform==='translateX(320px)';
+    p.style.transform=hidden?'translateX(0)':'translateX(320px)';
+  };
+  document.body.appendChild(pill);
+})();
 </script>
 </body>
 </html>
