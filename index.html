@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shama Thakur — shamathakur.dev</title>
+<meta name="description" content="AI systems engineer, loop architect, data analyst, builder of 100+ things. Stockholm. Nashik. Everywhere in between.">
+<meta property="og:title" content="Shama Thakur — shamathakur.dev">
+<meta property="og:description" content="I don't prompt AI. I build the systems that do.">
+<meta property="og:url" content="https://shamathakur.dev">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0d0c0a;--ink2:#13120f;--ink3:#1a1814;
+  --paper:#f5f0e8;--paper2:#ede7d9;--paper3:#e2dace;
+  --gold:#c9a84c;--gold2:#9b7e38;--gold3:rgba(201,168,76,0.15);
+  --rust:#b85c38;--teal:#3a7d74;--teal2:rgba(58,125,116,0.15);
+  --b1:rgba(201,168,76,0.12);--b2:rgba(245,240,232,0.07);--b3:rgba(245,240,232,0.04);
+  --m1:rgba(245,240,232,0.7);--m2:rgba(245,240,232,0.45);--m3:rgba(245,240,232,0.25);
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:'DM Mono',monospace;font-size:13px;font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* GRAIN */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+
+/* CURSOR TRAIL */
+#trail-canvas{position:fixed;inset:0;pointer-events:none;z-index:8999}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;border-bottom:1px solid var(--b2);background:rgba(13,12,10,0.9);backdrop-filter:blur(16px)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;letter-spacing:.16em;color:var(--gold);text-decoration:none}
+.nav-r{display:flex;align-items:center;gap:32px}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--m3);text-decoration:none;font-size:10px;letter-spacing:.14em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--paper)}
+.nav-status{font-size:10px;color:var(--teal);letter-spacing:.1em;display:flex;align-items:center;gap:6px}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;overflow:hidden;border-bottom:1px solid var(--b2)}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-ring{position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:700px;height:700px;border:1px solid rgba(201,168,76,0.05);border-radius:50%}
+.hero-ring2{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:500px;height:500px;border:1px solid rgba(201,168,76,0.04);border-radius:50%}
+.hero-ring3{position:absolute;right:0;top:50%;transform:translateY(-50%);width:300px;height:300px;border:1px solid rgba(201,168,76,0.06);border-radius:50%}
+
+.hero-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(64px,10vw,128px);font-weight:300;line-height:.88;letter-spacing:-.02em;color:var(--paper);margin-bottom:0}
+.hero-name-2{font-family:'Cormorant Garamond',serif;font-size:clamp(64px,10vw,128px);font-weight:300;line-height:.88;font-style:italic;letter-spacing:-.02em;color:var(--gold);margin-bottom:36px}
+
+.hero-rotating{font-size:13px;color:var(--m2);margin-bottom:40px;min-height:20px;letter-spacing:.04em}
+.hero-rotating span{border-right:1px solid var(--gold);padding-right:4px}
+
+.hero-desc{font-size:14px;color:var(--m1);max-width:480px;line-height:1.85;margin-bottom:48px;border-left:2px solid var(--gold3);padding-left:20px}
+.hero-desc strong{color:var(--paper);font-weight:400}
+
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:72px}
+.btn{font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:12px 28px;transition:all .2s;display:inline-block;font-family:'DM Mono',monospace}
+.btn-primary{background:var(--gold);color:var(--ink);font-weight:500}
+.btn-primary:hover{background:var(--paper)}
+.btn-ghost{border:1px solid var(--b1);color:var(--m2)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+.hero-stats{display:grid;grid-template-columns:repeat(4,auto);gap:0;border:1px solid var(--b2);width:fit-content}
+.hs{padding:20px 32px;border-right:1px solid var(--b2);text-align:center}
+.hs:last-child{border-right:none}
+.hs-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:4px}
+.hs-l{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--m3);line-height:1.4}
+
+/* VISITOR MODES */
+.modes-section{padding:80px 48px;border-bottom:1px solid var(--b2)}
+.modes-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;display:flex;align-items:center;gap:10px}
+.modes-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
+.modes-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--b2);border:1px solid var(--b2)}
+.mode-card{background:var(--ink2);padding:28px 20px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
+.mode-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.mode-card:hover::before,.mode-card.active::before{transform:scaleX(1)}
+.mode-card:hover,.mode-card.active{background:rgba(201,168,76,0.05)}
+.mode-icon{font-size:20px;margin-bottom:12px}
+.mode-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.mode-desc{font-size:11px;color:var(--m3);line-height:1.6}
+
+/* CONTENT PANELS */
+.panel{display:none;padding:64px 48px;border-bottom:1px solid var(--b2);animation:fadeUp .4s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* SECTION SHARED */
+section{padding:88px 48px;border-bottom:1px solid var(--b2)}
+.ey{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.ey::before{content:'';width:18px;height:1px;background:var(--gold)}
+h2.sh{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,52px);font-weight:300;line-height:1.05;color:var(--paper);margin-bottom:10px}
+h2.sh em{font-style:italic;color:var(--gold)}
+.sub{color:var(--m2);font-size:13px;line-height:1.8;max-width:520px;margin-bottom:52px}
+
+/* BENTO GRID */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:80px;gap:4px}
+.b{background:var(--ink2);border:1px solid var(--b2);padding:24px;transition:all .25s;position:relative;overflow:hidden;cursor:default}
+.b:hover{border-color:var(--b1);background:var(--ink3)}
+.b.c2{grid-column:span 2}.b.c3{grid-column:span 3}.b.c4{grid-column:span 4}.b.c5{grid-column:span 5}.b.c6{grid-column:span 6}.b.c7{grid-column:span 7}.b.c8{grid-column:span 8}.b.c12{grid-column:span 12}
+.b.r2{grid-row:span 2}.b.r3{grid-row:span 3}.b.r4{grid-row:span 4}.b.r5{grid-row:span 5}
+.b-cat{font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.bc-e{color:var(--rust)}.bc-ai{color:#8a7fc7}.bc-ci{color:var(--teal)}.bc-cr{color:var(--gold2)}.bc-br{color:var(--gold)}
+.b-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--paper);line-height:1.2;margin-bottom:6px}
+.b-title.lg{font-size:24px}
+.b-desc{font-size:11px;color:var(--m3);line-height:1.65}
+.b-n{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--gold);line-height:1}
+.b-nl{font-size:10px;color:var(--m3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+.b-link{position:absolute;bottom:20px;left:24px;font-size:10px;color:var(--teal);text-decoration:none;letter-spacing:.08em;border-bottom:1px solid rgba(58,125,116,.25);padding-bottom:1px;transition:all .2s}
+.b-link:hover{color:var(--gold);border-color:rgba(201,168,76,.4)}
+.b-pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.b-pill{font-size:9px;padding:2px 8px;border:1px solid var(--b1);color:var(--m3)}
+.b-bg{position:absolute;bottom:-10px;right:-10px;font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:rgba(201,168,76,0.04);line-height:1;pointer-events:none}
+
+/* TIMELINE */
+.tl{display:grid;grid-template-columns:100px 1fr;gap:0}
+.tl-item{display:contents}
+.tl-yr{font-size:11px;color:var(--gold);letter-spacing:.1em;padding:24px 0;border-right:1px solid var(--b2);padding-right:28px;position:relative}
+.tl-yr::after{content:'';position:absolute;right:-4px;top:30px;width:7px;height:7px;border-radius:50%;background:var(--gold);border:2px solid var(--ink)}
+.tl-content{padding:20px 0 20px 32px;border-bottom:1px solid var(--b2)}
+.tl-item:last-child .tl-content{border-bottom:none}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--paper);margin-bottom:4px}
+.tl-desc{font-size:12px;color:var(--m3);line-height:1.7;margin-bottom:6px}
+.tl-me{font-size:11px;color:var(--teal);letter-spacing:.03em}
+
+/* SERVICES */
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--b2);border:1px solid var(--b2)}
+.svc{background:var(--ink2);padding:36px 32px}
+.svc-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:16px}
+.svc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--paper);margin-bottom:8px}
+.svc-price{font-size:11px;color:var(--gold);letter-spacing:.08em;margin-bottom:10px}
+.svc-desc{font-size:12px;color:var(--m3);line-height:1.7}
+.svc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.svc-tag{font-size:9px;padding:3px 8px;border:1px solid var(--b1);color:var(--m3)}
+
+/* QR / BRAND */
+.brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.brand-card{background:var(--ink2);border:1px solid var(--b2);padding:28px;transition:border-color .2s}
+.brand-card:hover{border-color:var(--b1)}
+.brand-icon{width:48px;height:48px;border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
+.brand-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--paper);margin-bottom:6px}
+.brand-desc{font-size:11px;color:var(--m3);line-height:1.65}
+
+/* STACK CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:16px}
+.chip{font-size:10px;padding:4px 12px;border:1px solid var(--b2);color:var(--m3);letter-spacing:.05em;transition:all .2s}
+.chip:hover,.chip.hi{border-color:var(--gold);color:var(--gold)}
+.chip-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--m3);margin-top:20px;margin-bottom:6px;width:100%}
+
+/* KOFI */
+.kofi-strip{background:rgba(201,168,76,0.04);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:18px 48px;display:flex;align-items:center;justify-content:space-between}
+.kofi-strip p{font-size:12px;color:var(--m3)}
+.kofi-btn{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:8px 20px;transition:all .2s}
+.kofi-btn:hover{background:var(--gold);color:var(--ink)}
+
+/* CTA FINAL */
+.cta-final{padding:96px 48px;text-align:center;position:relative}
+.cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,80px);font-weight:300;font-style:italic;color:var(--paper);line-height:1;margin-bottom:20px}
+.cta-sub{font-size:13px;color:var(--m3);max-width:380px;margin:0 auto 40px;line-height:1.8}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{padding:32px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--b2);font-size:10px;color:var(--m3)}
+.ft-links{display:flex;gap:20px}
+footer a{color:var(--m3);text-decoration:none;letter-spacing:.06em;transition:color .2s}
+footer a:hover{color:var(--gold)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:14px 20px}
+  .nav-links{display:none}
+  .hero,.modes-section,section,.panel{padding-left:20px;padding-right:20px}
+  .hero-name,.hero-name-2{font-size:clamp(52px,14vw,80px)}
+  .hero-stats{grid-template-columns:repeat(2,1fr);width:100%}
+  .hs{border-bottom:1px solid var(--b2)}
+  .modes-grid{grid-template-columns:1fr 1fr}
+  .bento{grid-template-columns:1fr 1fr;grid-auto-rows:auto}
+  .b.c2,.b.c3,.b.c4,.b.c5,.b.c6,.b.c7,.b.c8,.b.c12{grid-column:span 1}
+  .b.r2,.b.r3,.b.r4,.b.r5{grid-row:span 1}
+  .svc-grid,.brand-grid{grid-template-columns:1fr}
+  .kofi-strip{flex-direction:column;gap:14px;text-align:center}
+  footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<canvas id="trail-canvas"></canvas>
+
+<nav>
+  <a href="#" class="nav-logo">shamathakur.dev</a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-status"><div class="nav-dot"></div>Open to roles · Stockholm</div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-bg">
+    <div class="hero-ring"></div>
+    <div class="hero-ring2"></div>
+    <div class="hero-ring3"></div>
+  </div>
+  <p class="hero-eyebrow">Stockholm · AI Systems Engineer · Loop Architect · Builder</p>
+  <h1 class="hero-name">Shama</h1>
+  <h1 class="hero-name-2">Thakur</h1>
+  <p class="hero-rotating"><span id="rotating-text">AI Systems Engineer</span></p>
+  <p class="hero-desc">
+    I don't prompt AI.<br>
+    <strong>I build the systems that do.</strong><br><br>
+    14 years in enterprise data. 100+ shipped projects. 13 production AI agents. GDPR compliance at 83-market scale. Nashik roots. Stockholm life. Building in public since before it had a name.
+  </p>
+  <div class="hero-ctas">
+    <a href="#work" class="btn btn-primary">See 100+ projects</a>
+    <a href="#services" class="btn btn-ghost">Work with me</a>
+    <a href="https://linkedin.com/in/shama-t-b7250632" target="_blank" class="btn btn-ghost">LinkedIn</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-n">100+</div><div class="hs-l">Repos<br>shipped</div></div>
+    <div class="hs"><div class="hs-n">13</div><div class="hs-l">Prod AI<br>agents</div></div>
+    <div class="hs"><div class="hs-n">83</div><div class="hs-l">GDPR<br>markets</div></div>
+    <div class="hs"><div class="hs-n">14+</div><div class="hs-l">Yrs in<br>data</div></div>
+  </div>
+</div>
+
+<!-- ═══ VISITOR MODES ═══ -->
+<div class="modes-section" id="modes">
+  <p class="modes-eyebrow">Who are you?</p>
+  <div class="modes-grid">
+    <div class="mode-card active" onclick="showPanel('recruiter')">
+      <div class="mode-icon">🎯</div>
+      <div class="mode-label">Recruiter / Hiring</div>
+      <div class="mode-desc">Looking at AI engineering, FDE, or data roles</div>
+    </div>
+    <div class="mode-card" onclick="showPanel('investor')">
+      <div class="mode-icon">💡</div>
+      <div class="mode-label">Investor / Client</div>
+      <div class="mode-desc">Exploring consulting, products, or a build</div>
+    </div>
+    <div class="mode-card" onclick="showPanel('collaborator')">
+      <div class="mode-icon">🤝</div>
+      <div class="mode-label">Builder / Collab</div>
+      <div class="mode-desc">Want to build something together</div>
+    </div>
+    <div class="mode-card" onclick="showPanel('community')">
+      <div class="mode-icon">✨</div>
+      <div class="mode-label">Community / Fan</div>
+      <div class="mode-desc">Found me online, want to follow the work</div>
+    </div>
+    <div class="mode-card" onclick="showPanel('human')">
+      <div class="mode-icon">🌿</div>
+      <div class="mode-label">Human / Personal</div>
+      <div class="mode-desc">Family, friends, or just curious about me</div>
+    </div>
+  </div>
+
+  <!-- PANELS -->
+  <div id="panel-recruiter" class="panel active" style="padding:40px 0 0">
+    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR RECRUITERS & HIRING MANAGERS</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I'm a rare profile: enterprise data engineering depth + production AI agent deployment + EU AI Act compliance expertise. Stockholm-based, 14 years of real-scale experience.</p>
+    <p style="font-size:12px;color:var(--m3);margin-bottom:20px">Targeting: Applied AI Engineer, Forward Deployed Engineer, AI Systems Architect, Loop Engineer. Hybrid or remote. Open to Anthropic, Salesforce, Klarna, Spotify, Nordea.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="https://linkedin.com/in/shama-t-b7250632" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">LinkedIn Profile</a>
+      <a href="mailto:shama@shamathakur.dev" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">Email directly</a>
+    </div>
+  </div>
+  <div id="panel-investor" class="panel" style="padding:40px 0 0">
+    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR INVESTORS & CLIENTS</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I build working AI systems, not decks. 100+ shipped products, 5 live Gumroad products, enterprise-grade delivery. Available for consulting, custom builds, and strategic AI advisory.</p>
+    <p style="font-size:12px;color:var(--m3);margin-bottom:20px">Areas: AI agent design, GDPR compliance architecture, data pipeline engineering, loop system design, EU AI Act readiness.</p>
+    <a href="#services" class="btn btn-primary" style="font-size:9px;padding:10px 20px">See services & rates</a>
+  </div>
+  <div id="panel-collaborator" class="panel" style="padding:40px 0 0">
+    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR BUILDERS & COLLABORATORS</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I work best with people who ship. If you have an idea that needs AI, data, or a full-stack build — let's talk. I bring engineering, compliance, and creative direction in one person.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="https://sovereignbysource.substack.com" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">Follow the build</a>
+      <a href="mailto:shama@shamathakur.dev" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">Pitch an idea</a>
+    </div>
+  </div>
+  <div id="panel-community" class="panel" style="padding:40px 0 0">
+    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">FOR THE COMMUNITY</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">Building in public since before that was a thing. South Asian expat in Stockholm, making AI tools that shouldn't exist yet. Follow the chaos on Substack.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="https://sovereignbysource.substack.com" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">Substack</a>
+      <a href="https://instagram.com/shama_thakur77" target="_blank" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">Instagram</a>
+      <a href="https://github.com/shamathakur77" target="_blank" class="btn btn-ghost" style="font-size:9px;padding:10px 20px">GitHub</a>
+    </div>
+  </div>
+  <div id="panel-human" class="panel" style="padding:40px 0 0">
+    <p style="font-size:12px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px">THE HUMAN BEHIND IT</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--paper);margin-bottom:16px;max-width:640px;line-height:1.4">I'm Shama. Originally from Nashik, India. Living in Sollentuna, Stockholm with my partner Aniket and our son. I build things with AI during nap times and late nights. I also believe in manifesting, sacred geometry, and that data and consciousness are the same thing at different scales.</p>
+    <a href="https://annam-brahma.vercel.app" target="_blank" class="btn btn-primary" style="font-size:9px;padding:10px 20px">Read Annam Brahma — my web comic</a>
+  </div>
+</div>
+
+<!-- ═══ WORK BENTO ═══ -->
+<section id="work">
+  <p class="ey">100+ shipped projects</p>
+  <h2 class="sh">Things I've <em>built.</em></h2>
+  <p class="sub">Live URLs. Real users. Real production systems. Not demos.</p>
+
+  <div class="bento">
+
+    <!-- Row 1 -->
+    <div class="b c5 r3">
+      <div class="b-cat bc-e">Enterprise AI · H&M Group · Production</div>
+      <div class="b-title lg">13 Copilot Studio Agents</div>
+      <div class="b-desc" style="margin-top:10px">Athena, Faye + 11 more. Organic cross-org adoption. Zero mandate. AIG.1/AIG.3 EU AI Act classification. The compliance architecture I designed from scratch is now the H&M standard.</div>
+      <div class="b-pills" style="margin-top:12px">
+        <span class="b-pill">Copilot Studio</span>
+        <span class="b-pill">EU AI Act</span>
+        <span class="b-pill">Enterprise</span>
+      </div>
+      <div class="b-bg">13</div>
+    </div>
+
+    <div class="b c4 r2">
+      <div class="b-cat bc-e">H&M · Data · Live</div>
+      <div class="b-title">Cookie Consent at Scale</div>
+      <div class="b-desc" style="margin-top:8px">GDPR monitoring across 300+ websites, 83 markets. BigQuery + Tealium/TCC + Power BI. Built the entire pipeline and dashboard stack.</div>
+    </div>
+
+    <div class="b c3 r1">
+      <div class="b-n">83</div>
+      <div class="b-nl">Markets monitored</div>
+    </div>
+
+    <div class="b c3 r1">
+      <div class="b-n">300+</div>
+      <div class="b-nl">Sites, live GDPR</div>
+    </div>
+
+    <!-- Row 2 cont -->
+    <div class="b c4 r2">
+      <div class="b-cat bc-ai">AI · RAG · Python · Built</div>
+      <div class="b-title">RAG Pipeline + Local Embeddings</div>
+      <div class="b-desc" style="margin-top:8px">Full retrieval-augmented generation system. Local embedding model + Anthropic API. Context as architecture. Built and documented from scratch.</div>
+      <div class="b-pills" style="margin-top:10px">
+        <span class="b-pill">Python</span><span class="b-pill">Anthropic API</span><span class="b-pill">Vectors</span>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="b c3 r2">
+      <div class="b-cat bc-ai">AI App · Live</div>
+      <div class="b-title">Frequency Studio</div>
+      <div class="b-desc" style="margin-top:8px">AI creative tool. Sovereign by Source flagship app.</div>
+      <a href="https://frequencystudio.vercel.app" target="_blank" class="b-link">frequencystudio.vercel.app →</a>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-ai">Physics + AI · Built</div>
+      <div class="b-title">Cymatic Oracle</div>
+      <div class="b-desc" style="margin-top:8px">8,000-particle Chladni physics + Web Audio API + Claude oracle. Real standing-wave equation.</div>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-ai">Three.js · WebGL · Live</div>
+      <div class="b-title">YANTRA</div>
+      <div class="b-desc" style="margin-top:8px">Sacred geometry Three.js universe. Real-time interactive WebGL.</div>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-ai">Reading Series · Live</div>
+      <div class="b-title">Gnosis</div>
+      <div class="b-desc" style="margin-top:8px">5-part Nag Hammadi essay series with Sophia AI companion.</div>
+      <a href="https://gnosis-rouge.vercel.app" target="_blank" class="b-link">gnosis-rouge.vercel.app →</a>
+    </div>
+
+    <!-- Civic row -->
+    <div class="b c3 r2">
+      <div class="b-cat bc-ci">Civic Tech · Own Domain</div>
+      <div class="b-title">Klartväg</div>
+      <div class="b-desc" style="margin-top:8px">Free multilingual Swedish immigration guide. Official sources only. klartvag.se</div>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-ci">Housing Tool · Live</div>
+      <div class="b-title">Bostad Decoder</div>
+      <div class="b-desc" style="margin-top:8px">Stockholm housing listings decoded. Hemnet in plain language.</div>
+      <a href="https://bostad-decoder.vercel.app" target="_blank" class="b-link">bostad-decoder.vercel.app →</a>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-ci">Expat Tool · Live</div>
+      <div class="b-title">Little Learner</div>
+      <div class="b-desc" style="margin-top:8px">Swedish+Hindi+Marathi+English för­skola app. For Desi parents in Sweden.</div>
+      <a href="https://littlelearner.vercel.app" target="_blank" class="b-link">littlelearner.vercel.app →</a>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-ci">Expat Guide · Live</div>
+      <div class="b-title">MOR & MAA</div>
+      <div class="b-desc" style="margin-top:8px">Pregnancy + postpartum guide for expat mothers in Sweden. South Asian + Swedish systems.</div>
+    </div>
+
+    <!-- Creative -->
+    <div class="b c6 r3">
+      <div class="b-cat bc-cr">Web Comic · 12 Episodes · 72 Slides · Live</div>
+      <div class="b-title lg">Annam Brahma</div>
+      <div class="b-desc" style="margin-top:10px">Maharashtrian food, consciousness, lineage. Watercolour textures, brass thali, marigold and rangoli motifs. Instagram-ready 1080×1080 PNG download per slide. Rooted in Nashik, made in Stockholm.</div>
+      <a href="https://annam-brahma.vercel.app" target="_blank" class="b-link">annam-brahma.vercel.app →</a>
+      <div class="b-bg">12</div>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-cr">Aesthetic · 5 Worlds · Live</div>
+      <div class="b-title">Aesthetic Worlds</div>
+      <div class="b-desc" style="margin-top:8px">Vaporwave · Whimsy · Dark Academia · Barbie · Corporate Girly. Five full HTML universes.</div>
+    </div>
+
+    <div class="b c3 r1">
+      <div class="b-cat bc-cr">In memoriam</div>
+      <div class="b-title" style="font-size:16px">Papa Memorial</div>
+      <div class="b-desc" style="font-size:11px;margin-top:4px">The most personal thing I've built.</div>
+    </div>
+
+    <!-- Brand -->
+    <div class="b c6 r2">
+      <div class="b-cat bc-br">Personal Brand · Full Ecosystem · Live</div>
+      <div class="b-title lg">Sovereign by Source</div>
+      <div class="b-desc" style="margin-top:8px">Landing page, link-in-bio, Substack, Stripe, Gumroad (5 products), ElevenLabs podcasts, Ko-fi. Built in public. Everything still running.</div>
+      <div class="b-pills" style="margin-top:10px">
+        <span class="b-pill">Substack</span><span class="b-pill">Stripe</span><span class="b-pill">Gumroad</span><span class="b-pill">ElevenLabs</span>
+      </div>
+    </div>
+
+    <div class="b c3 r2">
+      <div class="b-cat bc-br">Product · Gumroad · €19</div>
+      <div class="b-title">Stillstack</div>
+      <div class="b-desc" style="margin-top:8px">PowerShell automation tool for Windows. Shipped, listed, sold. The whole loop.</div>
+    </div>
+
+    <div class="b c3 r1">
+      <div class="b-n" style="font-size:40px">5+</div>
+      <div class="b-nl">Gumroad products live</div>
+    </div>
+
+    <!-- Overflow -->
+    <div class="b c12 r1" style="display:flex;align-items:center;gap:0;padding:16px 24px">
+      <p style="font-size:10px;color:var(--m3);letter-spacing:.06em">+ Desi Stockholm · Sovereign Aisle · AKASHA · Tonic · Pattern · ICONIQUE · Element Compass Bazi · Sensorium · Wayfarer · Family Jury · Safar Saathi · Nyay · Sweden In Data · Flat Earth Clock · Lilla Timmen · Bla Timmen · Hemval · The Verdict · Bostad Cockpit · Girl Dinner Oracle · Leftover Algorithm · MOR & MAA · gut-brain checklist · 70+ more on GitHub</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ METHOD ═══ -->
+<section id="method">
+  <p class="ey">How I work</p>
+  <h2 class="sh">The <em>loop</em> arc.</h2>
+  <div class="tl">
+    <div class="tl-item">
+      <div class="tl-yr">2022</div>
+      <div class="tl-content">
+        <div class="tl-title">Prompt Engineering</div>
+        <div class="tl-desc">Write a good prompt. Get output. Iterate by hand.</div>
+        <div class="tl-me">Me: Writing Copilot Studio agents from scratch.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">2023</div>
+      <div class="tl-content">
+        <div class="tl-title">Agent Orchestration</div>
+        <div class="tl-desc">String agents together. Build pipelines. Deploy across an org without anyone asking you to.</div>
+        <div class="tl-me">Me: 13 agents in production. Organic cross-org adoption. AIG compliance architecture.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">2024</div>
+      <div class="tl-content">
+        <div class="tl-title">Context Engineering</div>
+        <div class="tl-desc">Design the entire information environment the model sees. System prompt as architecture. Memory, tools, retrieval — all design decisions.</div>
+        <div class="tl-me">Me: RAG pipeline in Python. AKASHA. Gnosis. CLAUDE.md rulebook on Windows. Sovereign Content Engine.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">2026</div>
+      <div class="tl-content">
+        <div class="tl-title">Loop Engineering</div>
+        <div class="tl-desc">"My job is to write loops." — Boris Cherny, Head of Claude Code at Anthropic, June 2026. Stop being inside the loop. Design the system that runs it. The model becomes a subroutine.</div>
+        <div class="tl-me">Me: Claude Code on Windows. Vercel CLI loops. 100+ repos. GDPR monitoring that runs at 83 markets without me in the chair.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">Now</div>
+      <div class="tl-content">
+        <div class="tl-title">EU AI Act Deployer</div>
+        <div class="tl-desc">The legal-technical layer most AI engineers skip entirely. Risk classification, compliance architecture, responsible deployment at enterprise scale.</div>
+        <div class="tl-me">Me: The only person I know doing EU AI Act compliance AND shipping the actual agents AND building the monitoring dashboards.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services">
+  <p class="ey">Work with me</p>
+  <h2 class="sh">How I can <em>help.</em></h2>
+  <p class="sub">Consultant. Speaker. Freelancer. Employee. Brand. I'm all of it. Here's how to engage.</p>
+  <div class="svc-grid">
+    <div class="svc">
+      <div class="svc-num">01</div>
+      <div class="svc-title">AI Systems Audit</div>
+      <div class="svc-price">From €1,500 / engagement</div>
+      <div class="svc-desc">I review your existing AI setup — agents, prompts, pipelines, compliance posture — and tell you what's a liability, what's underbuilt, and what needs a loop instead of a prompt.</div>
+      <div class="svc-tags"><span class="svc-tag">EU AI Act</span><span class="svc-tag">GDPR</span><span class="svc-tag">Agent Design</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">02</div>
+      <div class="svc-title">Agent Build & Deploy</div>
+      <div class="svc-price">From €3,000 / project</div>
+      <div class="svc-desc">I design, build, and deploy production-grade AI agents for your organisation. Copilot Studio, Claude API, or custom stack. With compliance built in from day one.</div>
+      <div class="svc-tags"><span class="svc-tag">Copilot Studio</span><span class="svc-tag">Claude API</span><span class="svc-tag">Production</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">03</div>
+      <div class="svc-title">Speaking & Workshops</div>
+      <div class="svc-price">Available for conferences & internal teams</div>
+      <div class="svc-desc">Loop Engineering. AI in enterprise. GDPR + AI Act for teams. Building with Claude. I've presented internally at H&M AI Academy and can bring the same to your audience.</div>
+      <div class="svc-tags"><span class="svc-tag">Keynote</span><span class="svc-tag">Workshop</span><span class="svc-tag">AI Academy</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">04</div>
+      <div class="svc-title">Data Pipeline & BI</div>
+      <div class="svc-price">From €2,000 / project</div>
+      <div class="svc-desc">14 years of real data engineering. BigQuery, Azure Synapse, Power BI, Looker. I build dashboards that actually get used, not just pretty screenshots that age badly.</div>
+      <div class="svc-tags"><span class="svc-tag">BigQuery</span><span class="svc-tag">Power BI</span><span class="svc-tag">Looker</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BRAND KIT ═══ -->
+<section id="brand">
+  <p class="ey">Your QR · Your brand</p>
+  <h2 class="sh">Meet me <em>anywhere.</em></h2>
+  <p class="sub">One URL. Five audiences. Scan, share, done. Print it, wear it, AirDrop it.</p>
+  <div class="brand-grid">
+    <div class="brand-card">
+      <div class="brand-icon">📱</div>
+      <div class="brand-title">QR Business Card</div>
+      <div class="brand-desc">shamathakur.dev as a QR code. Print on Moo or Vistaprint. Hand to recruiters, investors, conference strangers. One scan, whole universe.</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-icon">🏷️</div>
+      <div class="brand-title">NFC + AirTag Stickers</div>
+      <div class="brand-desc">Program an NFC sticker to shamathakur.dev. Tap your laptop lid, your notebook, your water bottle. Anyone who taps gets the full site instantly.</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-icon">🔗</div>
+      <div class="brand-title">Link in Bio</div>
+      <div class="brand-desc">The Sovereign by Source link-in-bio already lives at linkinbio-khaki.vercel.app. Point it to shamathakur.dev as the master hub.</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-icon">🎤</div>
+      <div class="brand-title">Speaker One-Pager</div>
+      <div class="brand-desc">A single PDF: who you are, what you speak on, 3 talk titles, one QR. For conference organisers who want to book you without hunting for your bio.</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-icon">📄</div>
+      <div class="brand-title">CV + Portfolio PDF</div>
+      <div class="brand-desc">One-page AI-focused CV with shamathakur.dev as the centrepiece. Tailored versions: FDE edition, Anthropic edition, consultant edition.</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-icon">✉️</div>
+      <div class="brand-title">Email Signature</div>
+      <div class="brand-desc">shama@shamathakur.dev as your public email. Signature: name, title, URL, LinkedIn, GitHub. Professional-grade in under 5 minutes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section>
+  <p class="ey">Stack</p>
+  <h2 class="sh">Tools I <em>actually</em> use.</h2>
+  <div class="chips">
+    <span class="chip-label">AI & Agents</span>
+    <span class="chip hi">Claude Code</span><span class="chip hi">Anthropic API</span><span class="chip hi">Copilot Studio</span><span class="chip hi">RAG Pipelines</span><span class="chip hi">Context Engineering</span><span class="chip">Loop Engineering</span><span class="chip">ElevenLabs</span><span class="chip">Multi-agent Systems</span>
+    <span class="chip-label">Data & Cloud</span>
+    <span class="chip hi">BigQuery</span><span class="chip hi">Azure Synapse</span><span class="chip hi">Oracle PL/SQL</span><span class="chip hi">IBM DB2</span><span class="chip">SSIS / Pentaho</span><span class="chip">Tealium / TCC</span><span class="chip">Power BI</span><span class="chip">Looker Studio</span><span class="chip">PostgreSQL</span>
+    <span class="chip-label">Build & Ship</span>
+    <span class="chip hi">Python</span><span class="chip hi">React / Next.js</span><span class="chip hi">Vercel CLI</span><span class="chip hi">HTML / CSS / JS</span><span class="chip">Three.js</span><span class="chip">Web Audio API</span><span class="chip">PowerShell</span><span class="chip">Git</span>
+    <span class="chip-label">Compliance</span>
+    <span class="chip hi">EU AI Act</span><span class="chip hi">GDPR</span><span class="chip hi">AIG.1 / AIG.3</span><span class="chip">Risk Classification</span><span class="chip">AI Registry</span>
+  </div>
+</section>
+
+<!-- KOFI -->
+<div class="kofi-strip">
+  <p>Building useful things in public. Support the work if it's added value to yours.</p>
+  <a href="https://ko-fi.com/shamathakur" target="_blank" class="kofi-btn">Support the work →</a>
+</div>
+
+<!-- CTA -->
+<div class="cta-final" id="contact">
+  <h2 class="cta-h">Let's build<br>something real.</h2>
+  <p class="cta-sub">Stockholm. Open to roles, consulting, speaking, and building. No performative meetings.</p>
+  <div class="cta-row">
+    <a href="https://linkedin.com/in/shama-t-b7250632" target="_blank" class="btn btn-primary">LinkedIn</a>
+    <a href="mailto:shama@shamathakur.dev" class="btn btn-ghost">Email</a>
+    <a href="https://sovereignbysource.substack.com" target="_blank" class="btn btn-ghost">Substack</a>
+    <a href="https://github.com/shamathakur77" target="_blank" class="btn btn-ghost">GitHub</a>
+    <a href="https://ko-fi.com/shamathakur" target="_blank" class="btn btn-ghost">Ko-fi</a>
+  </div>
+</div>
+
+<footer>
+  <span>Shama Thakur · shamathakur.dev · Stockholm 2026</span>
+  <div class="ft-links">
+    <a href="https://instagram.com/shama_thakur77" target="_blank">Instagram</a>
+    <a href="https://medium.com/@shamathakur77" target="_blank">Medium</a>
+    <a href="https://pinterest.com/thkrshama" target="_blank">Pinterest</a>
+    <a href="https://shamathakur.carrd.co" target="_blank">Carrd</a>
+    <a href="https://ko-fi.com/shamathakur" target="_blank">Ko-fi</a>
+  </div>
+</footer>
+
+<script>
+// ── VISITOR MODE PANELS ──
+function showPanel(id) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const p = document.getElementById('panel-' + id);
+  if(p) p.classList.add('active');
+}
+
+// ── ROTATING TITLE ──
+const titles = ['AI Systems Engineer','Loop Architect','Data Engineering Lead','EU AI Act Specialist','Builder of 100+ Things','Forward Deployed Engineer','Copilot Studio Architect','RAG Pipeline Designer','Vibe Coder · Ship First','Manifesting Generator 3/5'];
+let ti = 0, ci = 0, deleting = false;
+const el = document.getElementById('rotating-text');
+function typeEffect() {
+  const target = titles[ti];
+  if(!deleting) {
+    el.textContent = target.slice(0, ++ci);
+    if(ci === target.length) { deleting = true; setTimeout(typeEffect, 1800); return; }
+  } else {
+    el.textContent = target.slice(0, --ci);
+    if(ci === 0) { deleting = false; ti = (ti+1) % titles.length; }
+  }
+  setTimeout(typeEffect, deleting ? 40 : 70);
+}
+typeEffect();
+
+// ── GOLD CURSOR TRAIL ──
+const canvas = document.getElementById('trail-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+const particles = [];
+document.addEventListener('mousemove', e => {
+  for(let i = 0; i < 2; i++) {
+    particles.push({
+      x: e.clientX, y: e.clientY,
+      vx: (Math.random()-.5)*.6, vy: (Math.random()-.5)*.6 - .4,
+      life: 1, size: Math.random()*2.5+.5
+    });
+  }
+});
+function animTrail() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i = particles.length-1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy; p.life -= 0.025;
+    if(p.life <= 0) { particles.splice(i,1); continue; }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(201,168,76,${p.life * 0.5})`;
+    ctx.fill();
+  }
+  requestAnimationFrame(animTrail);
+}
+animTrail();
+
+// ── SCROLL REVEAL ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='none'; } });
+}, {threshold:.08});
+document.querySelectorAll('.b,.svc,.brand-card,.tl-content').forEach(el => {
+  el.style.cssText += ';opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease';
+  io.observe(el);
+});
+</script>
+</body>
+</html>
